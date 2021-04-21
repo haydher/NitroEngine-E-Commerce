@@ -6,18 +6,27 @@ const selectedItem = require("./routes/selectedItem");
 const cart = require("./routes/cart");
 const test = require("./routes/test");
 const ejs = require("ejs");
+const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const dotenv = require("dotenv").config();
 const app = express();
 
-// mongoose
-//  .connect(process.env.DB, { useNewUrlParser: true })
-//  .then(() => console.log("Connected to the database"))
+mongoose
+ .connect(process.env.DB, { useNewUrlParser: true})
+ .then(() => console.log("Connected to the database"))
+ .catch((err) => console.log("MongoDB failed to connect to the server", err));
+// mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
+// const conn = mongoose.connection;
+// mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
+// mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); }); 
+
+// const client = new MongoClient(process.env.DB,{ useNewUrlParser: true});
+// client.connect().then(() => console.log("Connected to the database"))
 //  .catch((err) => console.log("MongoDB failed to connect to the server", err));
-
-
+// mongoose.connection.once('open', () => { console.log('Connected to the database with MongoDB Client'); });
+// mongoose.connection.on('error', (err) => { console.log('Error connecting to the database with MongoDB Client: ', err); }); 
 // setInterval(() => {
 //  console.log("mongoose connection status", mongoose.connection.readyState)
 // }, 2000);
