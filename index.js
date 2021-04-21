@@ -15,7 +15,7 @@ const app = express();
 // .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.eeejx.mongodb.net/NitroEngine?retryWrites=true&w=majority`, { useNewUrlParser: true })
 mongoose
  // .connect("mongodb://localhost/NitroEngine", { useNewUrlParser: true })
- .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@nitroengine.kgaw6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, { useNewUrlParser: true })
+ .connect(process.env.DB, { useNewUrlParser: true })
  .then(() => console.log("Connected to the database"))
  .catch((err) => console.log("failed to connect to the server", err));
 
