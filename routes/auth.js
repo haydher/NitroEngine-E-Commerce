@@ -64,7 +64,7 @@ router.use(
   secret: process.env.SECRET_SESSION_TOKEN,
   resave: false,
   saveUninitialized: false,
-  // store: MongoStore.create({mongoUrl: process.env.DB}),
+  store: MongoStore.create({mongoUrl: process.env.DB}),
  })
 );
 console.log("using passport.initialize()")
@@ -79,12 +79,13 @@ router.get("/", reqLoginTrue, async (req, res) => {
  console.log("IN /account")
  res.render("account")
 })
-
+console.log("Past /account")
 // show the signup page
 router.get("/register", reqLoginFalse, async (req, res) => {
  console.log("IN /account/register")
  res.render("register");
 });
+console.log("Past /account/register")
 // post data to sign up page
 router.post("/register", reqLoginFalse, async (req, res) => {
  console.log("POSTING A USER IN REGISTER");
@@ -113,6 +114,7 @@ router.get("/login", reqLoginFalse, async (req, res) => {
  res.render("login");
 });
 
+console.log("Past /account/login")
 router.post(
  "/login",
  passport.authenticate("local", {
@@ -168,5 +170,6 @@ router.delete("/logout", reqLoginTrue, (req, res) => {
  req.logOut();
  res.redirect("/");
 });
+console.log("Exporting auth.js")
 
 module.exports = router;
