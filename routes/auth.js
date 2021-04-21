@@ -13,6 +13,8 @@ const flash = require("express-flash");
 const methodOverride = require("method-override");
 const LocalStrategy = require("passport-local").Strategy;
 
+console.log("IN AUTH.JS")
+
 router.use(express.urlencoded({ extended: true }));
 // used for router.delete to override the post method
 router.use(methodOverride("_method"));
@@ -59,17 +61,20 @@ router.use(
 router.use(passport.initialize());
 router.use(passport.session());
 
+
 router.get("/", reqLoginTrue, async (req, res) => {
+ console.log("IN /account")
  res.render("account")
 })
 
 // show the signup page
 router.get("/register", reqLoginFalse, async (req, res) => {
+ console.log("IN /account/register")
  res.render("register");
 });
 // post data to sign up page
 router.post("/register", reqLoginFalse, async (req, res) => {
- console.log("in register");
+ console.log("POSTING A USER IN REGISTER");
  const validate = validateUser(req.body);
  if (validate.error) return res.status(400).send(validate.error.details[0].message);
 
@@ -91,6 +96,7 @@ router.post("/register", reqLoginFalse, async (req, res) => {
 
 // get to the login page
 router.get("/login", reqLoginFalse, async (req, res) => {
+ console.log("IN /account/login")
  res.render("login");
 });
 

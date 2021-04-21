@@ -14,7 +14,7 @@ const app = express();
 mongoose
  .connect(process.env.DB, { useNewUrlParser: true })
  .then(() => console.log("Connected to the database"))
- .catch((err) => console.log("failed to connect to the server", err));
+ .catch((err) => console.log("MongoDB failed to connect to the server", err));
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -24,7 +24,10 @@ app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 
-app.use("/", home);
+// app.use("/", home);
+app.use("/", (req, res)=> {
+ res.send("hello")
+})
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);
