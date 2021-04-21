@@ -17,6 +17,13 @@ mongoose
  .then(() => console.log("Connected to the database"))
  .catch((err) => console.log("MongoDB failed to connect to the server", err));
 
+
+setInterval(() => {
+ console.log("mongoose connection status", mongoose.connection.readyState)
+}, 2000);
+
+
+
 app.set("view engine", "ejs");
 app.use(express.json());
 // show static files
@@ -33,5 +40,5 @@ app.use("/item", item);
 app.use("/selectedItem", selectedItem);
 app.use("/cart", cart);
 
-const port = process.env.PORT || 9999;
+const port = process.env.PORT ||  9999;
 app.listen(port, () => console.log(`connected to the port ${port}`));
