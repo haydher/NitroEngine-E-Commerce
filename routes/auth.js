@@ -19,7 +19,6 @@ router.use(express.urlencoded({ extended: true }));
 // used for router.delete to override the post method
 router.use(methodOverride("_method"));
 
-console.log("making passport.use")
 passport.use(new LocalStrategy((username, password, done)=> {
   User.findOne({ username: username }, function (err, user) {
    if (err) {
@@ -34,28 +33,19 @@ passport.use(new LocalStrategy((username, password, done)=> {
    }
    return done(null, user);
   });
-  if(!user) console.log("Couldnt authenticate passport")
-  console.log("user--", user)
-  console.log("password--", password)
  })
 );
-console.log("making passport.use was successful")
 
-console.log("serializeUser the session")
 //  saves the use session
 passport.serializeUser(function (user, done) {
  done(null, user.id);
 });
-console.log("serializeUser was successful")
-
-console.log("deserializeUser the session")
 //  unsaves the user session
 passport.deserializeUser(function (id, done) {
  User.findById(id, function (err, user) {
   done(err, user);
  });
 });
-console.log("deserializeUser was successful")
 // initialize the flash to show error messages
 router.use(flash());
 // initialize session
@@ -64,28 +54,20 @@ router.use(
   secret: process.env.SECRET_SESSION_TOKEN,
   resave: false,
   saveUninitialized: false,
-  // store: MongoStore.create({mongoUrl: process.env.DB}),
+  store: MongoStore.create({mongoUrl: process.env.DB}),
  })
 );
-console.log("using passport.initialize()")
 router.use(passport.initialize());
-console.log("using passport.initialize() was successful")
-console.log("using passport.session()")
 router.use(passport.session());
-console.log("using passport.session() was successful")
 
 
 router.get("/", reqLoginTrue, async (req, res) => {
- console.log("IN /account")
  res.render("account")
 })
-console.log("Past /account")
 // show the signup page
 router.get("/register", reqLoginFalse, async (req, res) => {
- console.log("IN /account/register")
  res.render("register");
 });
-console.log("Past /account/register")
 // post data to sign up page
 router.post("/register", reqLoginFalse, async (req, res) => {
  console.log("POSTING A USER IN REGISTER");
@@ -110,11 +92,9 @@ router.post("/register", reqLoginFalse, async (req, res) => {
 
 // get to the login page
 router.get("/login", reqLoginFalse, async (req, res) => {
- console.log("IN /account/login")
  res.render("login");
 });
 
-console.log("Past /account/login")
 router.post(
  "/login",
  passport.authenticate("local", {
