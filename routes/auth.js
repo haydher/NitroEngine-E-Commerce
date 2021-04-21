@@ -19,8 +19,8 @@ router.use(express.urlencoded({ extended: true }));
 // used for router.delete to override the post method
 router.use(methodOverride("_method"));
 
-passport.use(
- new LocalStrategy(function (username, password, done) {
+console.log("making passport.use")
+passport.use(new LocalStrategy((username, password, done)=> {
   User.findOne({ username: username }, function (err, user) {
    if (err) {
     console.log("error in passport, (auth.js line 24)", err);
@@ -32,11 +32,15 @@ passport.use(
    if (!user.verifyPassword(password)) {
     return done(null, false, { message: "Password is incorrect" });
    }
-   name = user.username;
    return done(null, user);
   });
+  if(!user) console.log("Couldnt authenticate passport")
+  console.log("user--", user)
+  console.log("password--", password)
  })
 );
+console.log("making passport.use was successful")
+
 //  saves the use session
 passport.serializeUser(function (user, done) {
  done(null, user.id);
