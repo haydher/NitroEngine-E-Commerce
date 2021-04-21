@@ -52,7 +52,7 @@ router.use(flash());
 router.use(
  session({
   secret: process.env.SECRET_SESSION_TOKEN,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   store: MongoStore.create({mongoUrl: process.env.DB}),
  })
