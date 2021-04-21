@@ -19,7 +19,7 @@ router.use(
   secret: process.env.SECRET_SESSION_TOKEN,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: "mongodb://localhost/NitroEngine" }),
+  // store: MongoStore.create({ mongoUrl: "mongodb://localhost/NitroEngine" }),
  })
 );
 

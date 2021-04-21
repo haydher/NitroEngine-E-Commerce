@@ -12,15 +12,15 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const app = express();
 
-mongoose
- .connect(process.env.DB, { useNewUrlParser: true })
- .then(() => console.log("Connected to the database"))
- .catch((err) => console.log("MongoDB failed to connect to the server", err));
+// mongoose
+//  .connect(process.env.DB, { useNewUrlParser: true })
+//  .then(() => console.log("Connected to the database"))
+//  .catch((err) => console.log("MongoDB failed to connect to the server", err));
 
 
-setInterval(() => {
- console.log("mongoose connection status", mongoose.connection.readyState)
-}, 2000);
+// setInterval(() => {
+//  console.log("mongoose connection status", mongoose.connection.readyState)
+// }, 2000);
 
 
 
@@ -33,7 +33,9 @@ app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 
 app.use("/", home);
-app.use("/test", test);
+app.use("/test", (req, res)=> {
+ res.send("in test")
+});
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);
