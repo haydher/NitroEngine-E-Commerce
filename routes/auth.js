@@ -53,7 +53,7 @@ router.use(
   secret: process.env.SECRET_SESSION_TOKEN,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({mongoUrl: process.env.DB}),
+  // store: MongoStore.create({mongoUrl: process.env.DB}),
  })
 );
 router.use(passport.initialize());
