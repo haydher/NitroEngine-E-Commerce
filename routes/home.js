@@ -33,16 +33,14 @@ console.log("get -- getUserId",getUserId )
 router.get("/",getUserId, async (req, res) => {
  console.log("in home - /")
  console.log("trying to get the user id", getUserId)
- if(req.userId != undefined) {
-  let user = await User.findById(req.userId).select("-password").then(()=> console.log("USER-", user)).catch(err=> console.log("error in user", err));
-  console.log("Checking for user", user)
-  if(user?.length < 1 || !user || user == null) {
-   console.log("user doesnt exist")
-   console.log("setting user to undefined", user )
-   user = undefined
-   console.log("user set to undefined", user )
-  }
- } else console.log("Couldnt connect to the user because req.userId is undefined", req.userId)
+ let user = await User.findById(req.userId).select("-password").then(()=> console.log("USER-", user)).catch(err=> console.log("error in user", err));
+ console.log("Checking for user", user)
+ if(user?.length < 1 || !user || user == null) {
+  console.log("user doesnt exist")
+  console.log("setting user to undefined", user )
+  user = undefined
+  console.log("user set to undefined", user )
+ }
 
  let heroResult = await Hero.find()
  if (!heroResult || heroResult.length < 1) return res.status(500).send('Hero couldnt be found.');
