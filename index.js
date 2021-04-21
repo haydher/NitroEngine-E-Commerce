@@ -24,10 +24,7 @@ app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 
-// app.use("/", home);
-app.use("/", (req, res)=> {
- res.send("hello")
-})
+app.use("/", home);
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);
