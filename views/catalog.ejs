@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Nitro Engine</title>
+ <style>
+  *{
+   box-sizing: border-box;
+   padding: 0;
+   margin: 0;
+  }
+  h5 {
+   font-size: 18px;
+   padding: 5px;
+  }
+  span {
+   font-size: 17px;
+   padding: 0 0 10px 10px;
+  }
+  img {
+   height: 100px;
+   width: 100px;
+   margin-left: 5px;
+  }
+ </style>
+</head>
+<body>
+ 
+ <% let catalog  %> 
+ <% if(locals.item) %> 
+ <%  catalog = item%> 
+ <% //console.log("author", catalog[0].author.username) %> 
+
+ <% catalog.forEach(item => { %>
+  <h5>Name</h5>
+  <span><%-item.name%></span>
+
+ <h5>Description</h5>
+  <span><%-item.description%></span>
+
+  <h5>Type</h5>
+  <span><%-item.type%></span>
+
+ <h5>Brand</h5>
+  <span><%-item.brand%></span>
+
+ <h5>Category</h5>
+  <span><%-item.category%></span>
+
+ <h5>Gender</h5>
+  <span><%-item.gender%></span>
+
+ <h5>Tags</h5>
+  <span><%-item.tags%></span>
+
+ <h5>Author</h5>
+  <span><%-item.author.firstName%> <%-item.author.lastName%></p>
+
+ <h5>Uploaded Date</h5>
+ <span><%-item.date%></span>
+
+ <h5>Images</h5>
+  <% item.images.forEach(imgs => { %>
+   <img src="/imgUploads/<%=imgs%>"/>
+  <% }) %>
+  <br><br>
+  <a href="/upload/hero?id=<%-item._id%>" ><button>Upload Hero</button></a> 
+  <br><br><br>
+  <span>---------------------------------------------------</span>
+  <br><br><br>
+  <% }) %>
+ 
+
+
+</body>
+</html>

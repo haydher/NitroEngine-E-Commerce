@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <%- include("./partials/head", {title : "Items"}) %> 
+  <title>Nitro Engine</title>
+ </head>
+ <body>
+  <% let userInfo %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+  <% let catalog %> 
+  <% if (locals.item) { %> 
+  <%  catalog = item %>
+  <% } %> 
+  <% let searchedItem %> 
+  <% if (locals.searchResult) { %> 
+    <%  searchedItem = searchResult %>
+  <% } %> 
+  <% let query %> 
+  <% if (locals.searchField) { %> 
+    <%  query = searchField %>
+  <% } %> 
+
+  <!-- Header -->
+  <%- include("./partials/navBar", {userInfo}) %> 
+
+  <!-- New Arrivals -->
+
+  <section class="newArrivalsContainer">
+   <div class="newArrivals">
+    <h1 class="heading">New Arrivals</h1>
+    <div class="arrivalContainer">
+
+      <% function getRandArr(arr) { %>
+        <% return Math.floor(Math.random() * arr.length); %>
+      <% } %> 
+       <!-- get new index to make sure the items are new  -->
+      <% let set = new Set(); %> 
+      <% for( let i = 0; i < 7; i++ ) { %>
+      <% let randIndex = getRandArr(catalog) %> 
+      <% set.add(randIndex) %> 
+      <% let breakPoint = 0;%> 
+      <% while (set.has(randIndex) && set.size - 1 < i) { %> 
+        <% if (breakPoint > 5) break %> 
+        <% randIndex = getRandArr(catalog)  %> 
+        <% set.add(randIndex) %> 
+        <% breakPoint++  %> 
+      <% }%> 
+
+      <a href="/selectedItem/<%=item[randIndex]._id%>">
+      <div class="card">
+        <div class="cardImgContainer">
+          <img src="/imgUploads/<%=item[randIndex].images[0]%>"/>
+          <div class="cardInfo">
+          <p class="itemHeading"><%= item[randIndex].name%></p>
+          </div>
+        </div>
+      </div>
+      </a>
+    <% } %>
+
+     <!--
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man1.webp" alt="" />
+       <div class="cardInfo">
+        <p>Slim Jeans for Men</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man2.webp" alt="" />
+       <div class="cardInfo">
+        <p>Shirts for Men</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/woman1.webp" alt="" />
+       <div class="cardInfo">
+        <p>Slim Jeans for Women</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man_shoes_3.jpg" alt="" />
+       <div class="cardInfo">
+        <p>Running Sports Shoes</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/woman2.webp" alt="" />
+       <div class="cardInfo">
+        <p>Fit Jeans for Women</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man_shoes_1.jpg" alt="" />
+       <div class="cardInfo">
+        <p>Nike Airforce 1</p>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man3.webp" alt="" />
+       <div class="cardInfo">
+        <p>Hoodie for Men</p>
+       </div>
+      </div>
+     </div>
+      -->
+    </div>
+   </div>
+  </section>
+
+  <!-- shown items -->
+
+  <section class="ItemsShownContainer">
+   <div class="filterContainer">
+    <div class="itemsShownFilter">
+     <h5 class="filterMainHeader">Filter By:</h5>
+
+     <div id="category" class="filterHeader category">
+      <h5>Category</h5>
+      <img src="imgs/icons/plucIcon.svg" />
+     </div>
+     <div class="categoryContent contentOptions">
+      <input type="checkbox" name="hoodie" id="categoryContentHoodie" />
+      <label for="categoryContentHoodie">Hoodie</label>
+      <br />
+      <input type="checkbox" name="joggers" id="categoryContentJoggers" />
+      <label for="categoryContentJoggers">Joggers</label>
+      <br />
+      <input type="checkbox" name="shoes" id="categoryContentShoes" />
+      <label for="categoryContentShoes">Shoes</label>
+      <br />
+      <input type="checkbox" name="shirt" id="categoryContentShirts" />
+      <label for="categoryContentShirts">Shirts</label>
+     </div>
+
+     <div id="color" class="filterHeader color">
+      <h5>Color</h5>
+      <img src="imgs/icons/plucIcon.svg" />
+     </div>
+     <div class="colorContent contentOptions">
+      <input type="checkbox" name="red" id="colorontentRed" />
+      <label for="colorontentRed">Red</label>
+      <br />
+      <input type="checkbox" name="orange" id="colorontentOrange" />
+      <label for="colorontentOrange">Orange</label>
+      <br />
+      <input type="checkbox" name="yellow" id="colorontentYellow" />
+      <label for="colorontentYellow">Yellow</label>
+      <br />
+      <input type="checkbox" name="green" id="colorontentGreen" />
+      <label for="colorontentGreen">Green</label>
+      <br />
+      <input type="checkbox" name="blue" id="colorontentBlue" />
+      <label for="colorontentBlue">Blue</label>
+      <br />
+      <input type="checkbox" name="purple" id="colorontentPurple" />
+      <label for="colorontentPurple">Purple</label>
+      <br />
+      <input type="checkbox" name="white" id="colorontentWhite" />
+      <label for="colorontentWhite">White</label>
+      <br />
+      <input type="checkbox" name="black" id="colorontent" />
+      <label for="colorontent">Black</label>
+      <br />
+     </div>
+
+     <div id="gender" class="filterHeader gender">
+      <h5>Gender</h5>
+      <img src="imgs/icons/plucIcon.svg" />
+     </div>
+     <div class="genderContent contentOptions">
+      <input type="checkbox" name="male" id="genderContentMake" />
+      <label for="genderContentMake">Male</label>
+      <br />
+      <input type="checkbox" name="Female" id="genderContentFemale" />
+      <label for="genderContentFemale">Female</label>
+     </div>
+    </div>
+   </div>
+
+   <% if (searchedItem != undefined) { %>
+   <div class="itemShownContent">
+    <p class="resultHeading"><b><%= searchedItem.length %></b> Results found for <span><%= searchField %></span></p>
+    <div class="itemCardContainer">
+        <% searchedItem.forEach(item => { %>
+          <div class="itemCard">
+            <a href="/selectedItem/<%= item._id%>">
+              <div class="itemCardImgContainer">
+                <img src="/imgUploads/<%=item.images[0]%>"/>
+              </div>
+            </a>
+            <p class="itemHeading"><%= item.name%></p>
+            <p class="itemDescription"><%= item.type%></p>
+            <p class="itemPrice">$<%= item.price%></p>
+            <a href="/selectedItem/<%= item._id%>"><button id="<%= item._id%>"class="btn btn2">View Item</button></a>
+          </div>
+        <% }) %>
+      <% } else {%>  
+        <% catalog.forEach(item => { %>
+          <div class="itemCard">
+            <a href="/selectedItem/<%= item._id%>">
+              <div class="itemCardImgContainer">
+                <img src="/imgUploads/<%=item.images[0]%>"/>
+              </div>
+            </a>
+            <p class="itemHeading"><%= item.name%></p>
+            <p class="itemDescription"><%= item.type%></p>
+            <p class="itemPrice">$<%= item.price%></p>
+            <a href="/selectedItem/<%= item._id%>"><button id="<%= item._id%>"class="btn btn2">View Item</button></a>
+          </div>
+        <% }) %>
+      <% } %>  
+
+
+
+     <!-- 
+     
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+     <div class="itemCard">
+      <div class="itemCardImgContainer">
+       <img src="imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <p class="itemHeading">Great Men Hoodie</p>
+      <p class="itemDescription">Mens Hoodie</p>
+      <p class="itemPrice">$999.99</p>
+      <button class="btn btn2">View Item</button>
+     </div>
+      -->
+    </div>
+   </div>
+  </section>
+
+  <!-- footer -->
+
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+
+  <!-- <script src="scripts/test.js"></script> -->
+ </body>
+</html>

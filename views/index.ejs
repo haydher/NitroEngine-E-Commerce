@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <%- include("./partials/head", {title : "Home"}) %> 
+ </head>
+ <body>
+  <% let userInfo %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+
+  <% let hero %> 
+  <% if (locals.heroResult) { %> 
+  <%  hero = heroResult %>
+  <% } %> 
+  
+  <% let newArrivals %> 
+  <% if (locals.item) { %> 
+  <%  newArrivals = item %>
+  <% } %> 
+
+  <% let collection %> 
+  <% if (locals.collectionResult) { %> 
+  <%  collection = collectionResult %>
+  <% } %> 
+
+  <% function getRandArr(arr) { %>
+    <% return Math.floor(Math.random() * arr.length); %>
+  <% } %> 
+  <!-- Header -->
+  <%- include("./partials/navBar", {userInfo}) %> 
+
+  <!-- Hero -->
+  <!-- ./public/imgUploads/shirts/cloth1.jpg -->
+
+  <% let randHeroIndex = getRandArr(hero) %> 
+  <section class="hero heroContainer" 
+  style="background-image:
+   linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url('../imgUploads/hero/<%=hero[randHeroIndex].heroCover%>');
+   ">
+   <div class="heroContent">
+    <div class="heroInfo">
+      
+     <h1><%= hero[randHeroIndex].title %></h1>
+     <h3><%= hero[randHeroIndex].description %></h3>
+     <a href="/selectedItem/<%=hero[randHeroIndex].itemId%>"><button class="btn btn1">SHOP</button></a>
+    </div>
+    <div class="heroItemImg">
+     <img src="/imgUploads/hero/<%=hero[randHeroIndex].heroImage%>" alt="" />
+    </div>
+   </div>
+  </section>
+
+  <!-- coupon -->
+
+  <div class="couponContainer">
+   <div class="coupon">
+    <p class="couponText">EXTRA 60% OFF CLEARANCE</p>
+    <div class="textUnderLineContainer">
+     <a href="">
+      <p class="couponButton">SHOP NOW!!!</p>
+      <div class="textUnderLine"></div>
+     </a>
+    </div>
+   </div>
+  </div>
+
+  <!-- cards -->
+  <section class=".newArrivalsContainer">
+   <div class="newArrivals">
+    <h1 class="heading">New Arrivals</h1>
+    <div class="arrivalContainer">
+      <% let set = new Set(); %> 
+
+      <% for( let i = 0; i < 5; i++ ) { %>
+        <% let randArrIndex = getRandArr(newArrivals) %> 
+        <% set.add(randArrIndex) %> 
+        <% let breakPoint = 0;%> 
+        <% while (set.has(randArrIndex) && set.size - 1 < i) { %> 
+          <% if (breakPoint > 5) break %> 
+          <% randArrIndex = getRandArr(newArrivals)  %> 
+          <% set.add(randArrIndex) %> 
+          <% breakPoint++  %> 
+        <% }%> 
+
+        <div class="card">
+          <div class="cardImgContainer">
+            <img src="/imgUploads/<%=newArrivals[randArrIndex].images[0]%>" />
+          </div>
+          <div class="cardInfo">
+            <p><%=newArrivals[randArrIndex].name%></p>
+            <a href="/selectedItem/<%=newArrivals[randArrIndex]._id%>">
+              <button class="btn btn2">SHOP</button>
+            </a>
+          </div>
+        </div>
+
+      <% } %>
+     <!-- 
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man1.webp" alt="" />
+      </div>
+      <div class="cardInfo">
+       <p>Slim Jeans for Men</p>
+       <button class="btn btn2">SHOP</button>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man2.webp" alt="" />
+      </div>
+      <div class="cardInfo">
+       <p>Shirts for Men</p>
+       <button class="btn btn2">SHOP</button>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/woman1.webp" alt="" />
+      </div>
+      <div class="cardInfo">
+       <p>Slim Jeans for Women</p>
+       <button class="btn btn2">SHOP</button>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/woman2.webp" alt="" />
+      </div>
+      <div class="cardInfo">
+       <p>Fit Jeans for Women</p>
+       <button class="btn btn2">SHOP</button>
+      </div>
+     </div>
+     <div class="card">
+      <div class="cardImgContainer">
+       <img src="./imgs/newArrivals/man3.webp" alt="" />
+      </div>
+      <div class="cardInfo">
+       <p>Hoodie for Men</p>
+       <button class="btn btn2">SHOP</button>
+      </div>
+     </div>
+      -->
+    </div>
+   </div>
+  </section>
+
+  <!-- new feature -->
+
+  <section class="feature">
+   <div class="featureContainer">
+    <h1 class="heading">Feature</h1>
+    <div class="featureImgContainer">
+     <h1>The <span>Nitro Engine</span></h1>
+     <h3>New Winter Essential</h3>
+     <h5>Double Sided Jacket</h5>
+     <button class="btn btn1">SHOP</button>
+    </div>
+   </div>
+  </section>
+
+  <!-- collections -->
+
+  <section class="collections">
+   <h1 class="heading">Collections</h1>
+   <div class="collectionsContainer">
+    <% let collectionSet = new Set(); %> 
+
+    <% for( let i = 0; i < 2; i++ ) { %>
+      <% let randColIndex = getRandArr(collection) %> 
+      <% collectionSet.add(randColIndex) %> 
+      <% let breakPoint = 0;%> 
+      <% while (collectionSet.has(randColIndex) && collectionSet.size - 1 < i) { %> 
+        <% if (breakPoint > 5) break %> 
+        <% randColIndex = getRandArr(collection)  %> 
+        <% collectionSet.add(randColIndex) %> 
+        <% breakPoint++  %> 
+      <% }%> 
+      <div class="collection" 
+      style="background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%),
+      url('../imgUploads/collections/<%=collection[randColIndex].collectionImg%>');">
+       <div class="collectionInfo">
+         <h1><%=collection[randColIndex].title%></h1>
+         <a href="/item?collections=<%=collection[randColIndex].category%>">
+          <button class="btn btn2">SHOP</button>
+         </a>
+       </div>
+      </div>
+    <% } %>
+   </div>
+  </section>
+
+  <!-- footer -->
+
+  <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+ </body>
+</html>

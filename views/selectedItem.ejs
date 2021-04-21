@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <%- include("./partials/head", {title : "Item"}) %> 
+  <title>Nitro Engine</title>
+ </head>
+ <body>
+  <% let userInfo %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+  <% let selectedItem %> 
+  <% if (locals.selectedItemWithId) { %> 
+  <%  selectedItem = selectedItemWithId %>
+  <% } %> 
+  <% let items %> 
+  <% if (locals.catalog) { %> 
+  <%  items = catalog %>
+  <% } %> 
+
+  <!-- header -->
+  <%- include("./partials/navBar", {userInfo}) %> 
+  
+  <!-- coupon -->
+  
+  <div class="couponContainer">
+   <div class="coupon">
+     <p>USE CODE <span>GUIPROJECT</span> FOR 99% OFF</p>
+   </div>
+  </div>
+ 
+  <!-- item -->
+
+  <div class="itemContainer">
+    <div class="itemMainImgContainer">
+      <img src="/imgUploads/<%=selectedItem.images[0]%>"/>
+    </div>
+    <div class="itemDetailContainer">
+      <div class="itemDetail">
+        <p class="header"><%=selectedItem.name%></p>
+        <p class="itemType"><%=selectedItem.type%></p>
+        <div class="moreImgs">
+          <% selectedItem.images.forEach(img => { %>
+            <img src="/imgUploads/<%=img%>"/>
+          <% }) %>
+        </div>
+        <h5 class="descriptionHeader">DESCRIPTION</h5>
+        <p class="description"><%=selectedItem.description%></p>
+        <h5 class="sizeHeader">SELECT SIZE</h5>
+        <p class="error"></p>
+        <div class="sizeContainer">
+          <% let size = selectedItem.sizes.trim().split(", "); %> 
+          <% size.forEach(element => { %>
+            <div class="size ">
+              <span><%= element %></span>
+            </div>
+          <% }) %>
+        </div>
+        <div class="priceContainer">
+       
+          <h3 class="price">$<%=selectedItem.price%></h3>
+          <!--
+          <h3 class="price originalPrice">$696.90</h3>
+          <h3 class="price discrountPrice">$69.69</h3>
+           -->
+        </div>
+        <button class="btn btn3 cartBtn" id="<%=selectedItem._id%>">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- new arrivals -->
+  
+  <section class="newArrivalsContainer">
+    <div class="newArrivals">
+     <h1 class="heading">New Arrivals</h1>
+     <div class="arrivalContainer">
+
+
+      <% function getRandArr(arr) { %>
+       <% return Math.floor(Math.random() * arr.length); %>
+      <% } %> 
+      <!-- get new index to make sure the items are new  -->
+      <% let set = new Set(); %> 
+      <% for( let i = 0; i < 7; i++ ) { %>
+      <% let randIndex = getRandArr(items) %> 
+      <% set.add(randIndex) %> 
+      <% let breakPoint = 0;%> 
+      <% while (set.has(randIndex) && set.size - 1 < i) { %> 
+        <% if (breakPoint > 5) break %> 
+        <% randIndex = getRandArr(items)  %> 
+        <% set.add(randIndex) %> 
+        <% breakPoint++  %> 
+      <% }%> 
+
+     <a href="/selectedItem/<%=items[randIndex]._id%>">
+     <div class="card">
+       <div class="cardImgContainer">
+         <img src="/imgUploads/<%=items[randIndex].images[0]%>"/>
+         <div class="cardInfo">
+         <p class="itemHeading"><%= items[randIndex].name%></p>
+         </div>
+       </div>
+     </div>
+     </a>
+   <% } %>
+
+
+
+     </div>
+    </div>
+   </section>
+
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+    <%- include("./partials/scripts") %> 
+  </body>
+</html>

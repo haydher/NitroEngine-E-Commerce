@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <%- include("./partials/head", {title : "Cart"}) %> 
+</head>
+<body>
+
+ <% let item = [], size, userInfo %> 
+ 
+ <% if (locals.user) { %> 
+ <%  userInfo = user %>
+ <% } %> 
+
+ <% if (locals.itemArr) { %> 
+ <%  item = itemArr %>
+ <% } %> 
+
+ <% if (locals.itemSize) { %> 
+ <%  size = itemSize %>
+ <% } %> 
+
+ <% let totalPrice = 0 %> 
+ <% function getTotalCost(){ %> 
+  <%  item.forEach(e => { %>
+   <% totalPrice += e.price %>
+  <% });  %> 
+  <% return totalPrice %> 
+ <% } %> 
+
+ 
+ <!-- NavBar -->
+ <%- include("./partials/navBar", {userInfo}) %>
+ 
+  <!-- coupon -->
+ 
+ <div class="couponContainer">
+  <div class="coupon">
+    <p>USE CODE <span>GUIPROJECT</span> FOR 99% OFF</p>
+  </div>
+ </div>
+ 
+ <% if (item.length < 1) { %>
+  <section class="cartEmptyContainer">
+   <div class="cartEmpty">
+    <h1>Cart is Empty.</h1>
+    <p>Start <a href="/">Shopping</a> and Fill it UP!!</p>
+   </div>
+  </section>
+ <% } else {%>
+ <section class="cartMainContainer">
+  <div class="cartInfo">
+   <div class="memberSignIn">
+    <h1>Free Shipping for Members</h1>
+    <p>Sign up now or Login to get free shipping on all orders.</p>
+   </div>
+   <h3 class="cartHeader">Cart</h3>
+
+   <% for( let i = 0; i < item.length; i++ ) { %>
+    <div class="cardItem">
+     <div class="cartItemImg">
+      <img src="./imgUploads/<%=item[i].images[0]%>">
+     </div>
+     <div class="cartItemInfo">
+      <h2 class="cartItemTitle"><%=item[i].name%></h2>
+      <p class="cartItemType"><%=item[i].type%></p>
+      <p class="cartItemSize">Size: <%=size[i]%></p>
+      <p class="itemPrice">$<%=item[i].price%></p>
+     </div>
+    </div>
+   <% } %>
+  </div>
+
+  <div class="orderMainContainer">
+   <div class="orderSummaryContainer">
+
+    <h1 class="OrderSummaryHeader">Order Summary</h1>
+    <div class="orderInfoContainer">
+     <p class="orderInfo"><%= item.length %> Products</p> 
+     <p class="cost">$<%=getTotalCost()%></p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Shipping Cost</p> 
+     <% if(userInfo) { %>
+      <p class="cost">$0</p>
+     <% } else { %>
+      <p class="cost">$50</p>
+      <% totalPrice += 50 %> 
+     <% } %>
+    </div>
+
+    <div class="couponInput">
+     <input type="text" name="coupon" id="couponInput">
+     <img src="imgs/icons/plucIcon.svg" >
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderinfo">Total Cost</p> 
+     <p class="cost">$<%= totalPrice %></p>
+    </div>
+
+    <button class="btn btn3">PROCEED TO CHECKOUT</button>
+   </div>
+  </div>
+
+ </section>
+ <% }  %>
+
+
+ <!-- footer -->
+ <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>

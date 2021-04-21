@@ -1,0 +1,95 @@
+  <nav>
+   <div id="header">
+    <div class="logo">
+     <a href="/">
+      <img src="/imgs/logo/main_logo.svg" alt="Website Logo" />
+     </a>
+    </div>
+    <div class="navBarOps">
+     <ul>
+      <li>Men's
+        <ul class="dropDown">
+          <a href="/item?gender=men&category=shirts"><li>Shirts</li></a>
+          <a href="/item?gender=men&category=hoodie"><li>Hoodie</li></a>
+          <a href="/item?gender=men&category=pants"><li>Pants</li></a>
+          <a href="/item?gender=men&category=shorts"><li>Shorts</li></a>
+          <a href="/item?gender=men&category=shoes"><li>Shoes</li></a>
+        </ul>
+      </li>
+      <li>Women's
+        <ul class="dropDown">
+          <a href="/item?gender=women&category=shirts"><li>Shirts</li></a>
+          <a href="/item?gender=women&category=hoodie"><li>Hoodie</li></a>
+          <a href="/item?gender=women&category=pants"><li>Pants</li></a>
+          <a href="/item?gender=women&category=shorts"><li>Shorts</li></a>
+          <a href="/item?gender=women&category=shoes"><li>Shoes</li></a>
+        </ul>
+      </li>
+      <li>Collections
+        <ul class="dropDown">
+          <a href="/item?collections=red"><li>All Red Collection</li></a>
+          <a href="/item?collections=orange"><li>All Orange Collection</li></a>
+          <a href="/item?collections=yellow"><li>All Yellow Collection</li></a>
+          <a href="/item?collections=green"><li>All Green Collection</li></a>
+          <a href="/item?collections=blue"><li>All Blue Collection</li></a>
+          <a href="/item?collections=purple"><li>All Purple Collection</li></a>
+          <a href="/item?collections=white"><li>All White Collection</li></a>
+          <a href="/item?collections=black"><li>All Black Collection</li></a>
+          <a href="/item?collections=summer"><li>Summer Collection</li></a>
+          <a href="/item?collections=winter"><li>Winter Collection</li></a>
+          <a href="/item?collections=spring"><li>Spring Collection</li></a>
+          <a href="/item?collections=jeans"><li>Jeans Collection</li></a>
+          <a href="/item?collections=shoes"><li>Shoes Collection</li></a>
+          <a href="/item?collections=shorts"><li>Shorts Collection</li></a>
+          <a href="/item?collections=shirts"><li>Shirts Collection</li></a>
+        </ul>
+      </li>
+      <li><a href="">Seasonal</a></li>
+      <li><a href="">Sales</a></li>
+     </ul>
+    </div>
+    <div class="searchBar">
+     <input type="text" name="searchBar" id="searchBar" placeholder="Search..." />
+     <img src="/imgs/icons/searchIcon.svg" id="searchBtn" alt="search icon" />
+    </div>
+
+    <div class="functionIcons">
+      <!-- if not logged in -->
+    <% if (userInfo != undefined) { %>
+    <!-- if logged in -->
+    <div class="account">
+      <img src="/imgs/icons/userIcon.svg" alt="user profile" />
+      <ul class="accountContainer toggleDropDown">
+
+       <% if (userInfo.isAdmin) { %>
+        <a href="/upload/hero"><li>Upload Hero Item</li></a>
+        <a href="/upload/collections"><li>Upload Collections</li></a>
+        <a href="/upload/item"><li>Upload Item</li></a>
+       <% } %>
+
+       <a href="/account"><li>Account</li></a>
+       <form action="/account/logout?_method=DELETE" method="POST">
+       <button class="logout">Logout</button></a>
+      </form>
+      </ul>
+     </div>
+    <% } else {%> 
+    <!-- if not logged in -->
+    <div class="ifNotLoggedIn">
+      <a href="/account/login"><p>Login</p></a>
+      <a href="/account/register"><p>Register</p></a>
+    </div>
+    <% } %> 
+     <!-- <img src="/imgs/icons/settingIcon.svg" alt="user settings" /> -->
+
+     <div class="itemCartContainer">
+      <a href="/cart">
+       <img src="/imgs/icons/cartIcon.svg" alt="item cart" />
+       <div class="cartCount ">
+        <span></span>
+       </div>
+      </a>
+     </div>
+    </div>
+   </div>
+  </nav>

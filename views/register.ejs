@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+ </head>
+ <body>
+  <nav>
+   <h1>LOGO</h1>
+   <a href="/">Home</a>
+   <a href="/account">Account</a>
+  </nav>
+
+  <form action="/account/register/" method="POST">
+   <label for="firstName">First Name</label>
+   <input type="text" id="firstName" name="firstName" value="turkey" required /><br />
+   <label for="lastName">Last Name</label>
+   <input type="text" id="lastName" name="lastName" value="john" required /><br />
+   <label for="username">username</label>
+   <input type="text" id="username" name="username" value="turkey" required /><br />
+   <label for="email">email</label>
+   <input type="email" id="email" name="email" value="email@email.com" required /><br />
+   <label for="password">password</label>
+   <input type="text" id="password" name="password" value="1234512313123" required /><br />
+   <label for="phone">phone</label>
+   <input type="text" id="phone" name="phone" value="123456789112" required /><br />
+   <button>Submit</button>
+  </form>
+  <br />
+  <a href="/account/login">Login</a>
+ </body>
+</html>

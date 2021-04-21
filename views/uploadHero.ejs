@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload New Hero Item</title>
+</head>
+ <body>
+  <% if (locals.message) { %>
+   <h5> <%= message %>  </h5>
+  <% } %>
+
+  <% let fieldValues %> 
+  <% if (locals.data) { %>
+   <% fieldValues = data %> 
+  <% } %>
+  <% let selectedItemId %> 
+  <% if (locals.id) { %>
+   <% selectedItemId = id %> 
+  <% } %>
+
+
+  <form action="/upload/hero" enctype="multipart/form-data" method="POST">
+   
+   <label for="itemId">Item ID: </label><br>
+   <% if (fieldValues?.itemId != undefined) { %>
+    <input type="text" name="itemId" id="itemId" size="77" value=<%= fieldValues.itemId  %> required />
+   <% }  else {%>
+    <input type="text" name="itemId" id="itemId" size="77" value=<%=selectedItemId%> required />
+   <% } %>
+
+   <br /><br />
+
+   <label for="title">Hero Title: </label><br>
+   <% if (fieldValues?.title != undefined) { %>
+    <input type="text" name="title" id="title" size="77" value=<%= fieldValues.title  %> required />
+   <% }  else {%>
+    <input type="text" name="title" id="title" size="77" required />
+   <% } %>
+
+   <br /><br />
+   
+
+   <label for="description">Hero Description:</label><br>
+   <% if (fieldValues?.description != undefined) { %>
+    <textarea  name="description" id="description" rows="6" cols="70" required><%=fieldValues.description%> </textarea>
+   <% }  else {%>
+    <textarea  name="description" id="description" rows="6" cols="70" required>The Nike Trail Dri-FIT T-Shirt delivers the.
+    </textarea>
+   <% } %>
+  
+   <br /><br />
+
+   <label for="category">Hero Category:</label>
+   <select name="category" id="category" required>
+    <option value="shirts">Shirts</option>
+    <option value="shoes">Shoes</option>
+    <option value="hoodie">Hoodie</option>
+    <option value="jeans">Jeans</option>
+   </select>
+
+   <br /><br />
+
+   <label for="heroCoverImg">Hero Item Cover:</label><br>
+   <input type="file" name="heroCoverImg" id="heroCoverImg"/>
+   
+   <br /><br />
+   
+   <label for="heroItemImg">Hero Item Image:</label><br>
+   <input type="file" name="heroItemImg" id="heroItemImg" />
+   
+   <br /><br />
+   <button>Upload</button>
+  </form>
+ </body>
+</html>
