@@ -24,5 +24,5 @@ module.exports = function (req, res, next) {
  } catch (error) {
   console.log("Got error getting getUserId on LINE 19 in getUserID.js", error)
  }
- console.log("Existing try catch block")
+ console.log("Exiting try catch block")
 };

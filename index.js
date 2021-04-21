@@ -4,6 +4,7 @@ const auth = require("./routes/auth");
 const item = require("./routes/item");
 const selectedItem = require("./routes/selectedItem");
 const cart = require("./routes/cart");
+const test = require("./routes/test");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -25,6 +26,7 @@ app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 
 app.use("/", home);
+app.use("/test", test);
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);
