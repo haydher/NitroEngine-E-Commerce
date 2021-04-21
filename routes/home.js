@@ -33,7 +33,7 @@ console.log("get -- getUserId",getUserId )
 router.get("/",getUserId, async (req, res) => {
  console.log("in home - /")
  console.log("trying to get the user id", getUserId)
- let user = await User.findById(req.userId).select("-password").then(()=> console.log("USER-", user)).catch(err=> console.log("error in user", err));
+ let user = await User.findById(req.userId).select("-password")
  console.log("Checking for user", user)
  if(user?.length < 1 || !user || user == null) {
   console.log("user doesnt exist")
