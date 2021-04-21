@@ -33,13 +33,14 @@ mongoose
 
 
 
-app.set("view engine", "ejs");
 app.use(express.json());
 // show static files
 app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
+
+app.set("view engine", "ejs");
 
 app.use("/", home);
 app.use("/test", (req, res)=> {
