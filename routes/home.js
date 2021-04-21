@@ -12,14 +12,14 @@ const dotenv = require("dotenv").config();
 const session = require("express-session");
 const router = express.Router();
 
-router.use(
- session({
-  secret: process.env.SECRET_SESSION_TOKEN,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: "mongodb://localhost/NitroEngine" }),
- })
-);
+// router.use(
+//  session({
+//   secret: process.env.SECRET_SESSION_TOKEN,
+//   resave: false,
+//   saveUninitialized: false,
+//   store: MongoStore.create({ mongoUrl: "mongodb://localhost/NitroEngine" }),
+//  })
+// );
 
 router.get("/",getUserId, async (req, res) => {
  let user = await User.findById(req.userId).select("-password")
