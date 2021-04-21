@@ -12,6 +12,8 @@ const dotenv = require("dotenv").config();
 const session = require("express-session");
 const router = express.Router();
 
+console.log("In Home.js")
+
 router.use(
  session({
   secret: process.env.SECRET_SESSION_TOKEN,
@@ -21,12 +23,20 @@ router.use(
  })
 );
 
+console.log("session was initialized")
+
+console.log("Getting home.js to index ")
+
+console.log("get -- getUserId",getUserId )
+
+
 router.get("/",getUserId, async (req, res) => {
  console.log("in home - /")
  console.log("trying to get the user id", getUserId)
 
- const user = await User.findById(req.userId).select("-password");
- if(user.length < 1 || !user) {
+ let user = await User.findById(req.userId).select("-password");
+ console.log("Checking for user", user)
+ if(user?.length < 1 || !user || user == null) {
   console.log("user doesnt exist")
   console.log("setting user to undefined", user )
   user = undefined
@@ -54,5 +64,6 @@ router.get("/",getUserId, async (req, res) => {
  res.render("index", {item, heroResult,collectionResult})
 });
 
+console.log("Exporting Home.js to index")
 
 module.exports = router;
