@@ -2,8 +2,9 @@
  "name": "nitroengine",
  "version": "1.0.0",
  "description": "",
- "main": "index.js",
+ "main": "app.js",
  "scripts": {
+  "bcrypt": "npm install bcrypt",
   "test": "echo \"Error: no test specified\" && exit 1",
   "start": "node index.js"
  },
