@@ -11,10 +11,7 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const app = express();
 
-//
-// .connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.eeejx.mongodb.net/NitroEngine?retryWrites=true&w=majority`, { useNewUrlParser: true })
 mongoose
- // .connect("mongodb://localhost/NitroEngine", { useNewUrlParser: true })
  .connect(process.env.DB, { useNewUrlParser: true })
  .then(() => console.log("Connected to the database"))
  .catch((err) => console.log("failed to connect to the server", err));
@@ -28,9 +25,6 @@ app.use("/imgs", express.static(__dirname + "/public/imgs"));
 app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 
 app.use("/", home);
-// app.get("/", (req, res)=> {
-//  res.render("index")
-// })
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);

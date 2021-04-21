@@ -4,7 +4,7 @@
   <%- include("./partials/head", {title : "Home"}) %> 
  </head>
  <body>
-  <% let userInfo %> 
+  <% let userInfo = undefined %> 
   <% if (locals.user) { %> 
   <%  userInfo = user %>
   <% } %> 
@@ -31,7 +31,6 @@
   <%- include("./partials/navBar", {userInfo}) %> 
 
   <!-- Hero -->
-  <!-- ./public/imgUploads/shirts/cloth1.jpg -->
 
   <% let randHeroIndex = getRandArr(hero) %> 
   <section class="hero heroContainer" 
