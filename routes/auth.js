@@ -1,7 +1,7 @@
 const { User, validateUser } = require("../models/user");
 const { reqLoginTrue, reqLoginFalse } = require("../middleware/authUser");
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const router = express.Router();
