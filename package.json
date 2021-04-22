@@ -6,7 +6,7 @@
  "scripts": {
   "bcrypt": "npm install node-pre-gyp -g",
   "test": "echo \"Error: no test specified\" && exit 1",
-  "start": "node index.js"
+  "start": "node app.js"
  },
  "engines": {
   "node": "14.16.0"
