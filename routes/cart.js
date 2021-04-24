@@ -1,23 +1,20 @@
 const { User } = require("../models/user");
 const { Item } = require("../models/item");
 const { Cart, validateCart } = require("../models/cart");
+const {authToken} = require("../middleware/authToken");
 const { reqLoginTrue } = require("../middleware/authUser");
 const admin = require("../middleware/admin");
-const getUserId = require("../middleware/getUserId");
 const express = require("express");
-const passport = require("passport");
 const ejs = require("ejs");
 const router = express.Router();
 const cookieParser = require('cookie-parser')
 const env = require("dotenv").config();
 
 router.use(express.urlencoded({ extended: true }));
-
-router.use(passport.initialize());
-router.use(passport.session());
 router.use(cookieParser());
 
-router.get("/", getUserId, async (req, res) => {
+router.get("/", [authToken], async (req, res) => { 
+
  let user = await User.findById(req.userId).select("-password");
  if(user == undefined) user = undefined
 
@@ -26,7 +23,7 @@ router.get("/", getUserId, async (req, res) => {
   let readCookie = req.cookies.cart?.split(',')
   let userItemArr = [], userItemSizeArr = []
   // if cookie has a cart with items
-  if(readCookie) {
+  if(readCookie && readCookie != "") {
    for(let i = 0; i < readCookie.length; i++ ){
     let cookieItem = readCookie[i].split("+")
     // check if user cart already has item
@@ -58,6 +55,16 @@ router.get("/", getUserId, async (req, res) => {
       },{ useUnifiedTopology: true }
      );
    }
+  //  console.log("User cart", user)
+  //  console.log("user.userCart[0].itemId", user.userCart[0].itemId)
+  //  console.log("user.userCart[0].size", user.userCart[0].size)
+  //  if (user != undefined && user.userCart.length > 0)
+  //   //  return res.cookie("cart", "").render("cart", { 
+  //    return res.render("cart", { 
+  //      user,
+  //      itemArr : user.userCart[0].itemId,
+  //      itemSize : user.userCart[0].size
+  //     });
   }
  }
 
@@ -65,8 +72,7 @@ router.get("/", getUserId, async (req, res) => {
  let itemSize = []
 
  let readCookie = req.cookies.cart?.split(',')
-
- if(readCookie) {
+ if(readCookie && readCookie != "") {
   for(let i = 0; i < readCookie.length; i++ ){
    let cookieItem = readCookie[i].split("+")
    let item = await Item.findById(cookieItem[0])
@@ -74,17 +80,15 @@ router.get("/", getUserId, async (req, res) => {
    itemArr.push(item)
    itemSize.push(cookieItem[1])
   };
-  if (user != undefined && itemArr.length > 1 && itemSize.length > 1){
+  if (user != undefined && itemArr.length > 0 && itemSize.length > 0){
    return res.render("cart", { user, itemArr, itemSize});
   } return res.render("cart", {  itemArr, itemSize});
- } else return res.render("cart");
+ }else if(user != undefined) return res.render("cart", {user});
+ else return res.render("cart");
 
 });
 
 module.exports = router;
-
-
-
 
 //  WORKING CART SYSTEM WITH CARTS
 /*

@@ -98,13 +98,13 @@ const cartBtn = document.querySelector(".cartBtn")
 const cartCount = document.querySelector(".cartCount")
 const errMessage = document.querySelector(".error")
 let checkCookie = document.cookie.split(';').some((item) => item.trim().startsWith('cart='))
+// read  the cart cookie, 
+let readCookie = document.cookie.split('; ').find(row => row.startsWith('cart=')).split('=')[1];
+
 let count, innerCartCount = 0, size
 const itemSize = document.querySelectorAll(".size")
-
 // check if cookie with name `cart=` exists
-if (checkCookie) {
- // read  the cart cookie, 
- let readCookie = document.cookie.split('; ').find(row => row.startsWith('cart=')).split('=')[1];
+if (checkCookie && readCookie.length > 0) {
  // read each value since its stored as a string, eg. `"123,123,123"` this makes it, `"123","123","123",`
  let eachCartItem = readCookie.split(',')
  // increase the cart count
@@ -127,7 +127,10 @@ if (checkCookie) {
   }
  });
 }
-
+if(readCookie.length < 1) {
+ cartCount.classList.remove("cartCountActive")
+ cartCount.children[0].innerHTML = ""
+}
 // add new cart item to cookie
 cartBtn.addEventListener("click", ()=> {
  // get the size of the element

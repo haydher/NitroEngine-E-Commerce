@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+     <%- include("./partials/head", {title : "Account"}) %> 
  </head>
  <body>
-  <nav>
-   <h1>LOGO</h1>
-   <a href="/">Home</a>
-   <a href="/account">Account</a>
-  </nav>
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %>  
 
-  <p><% if(messages.error) { %> <%= messages.error %> <% } %></p>
-<h2>account</h2>
-  <br />
+  <%- include("./partials/navbar", {userInfo}) %> 
+  <h2>Account</h2>
+  <p>Name</p>
+  <span><%= userInfo.firstName %></span> <span><%= userInfo.lastName %></span>
+  <br>
+  <br>
+  <p>Gender</p>
+  <span><%= userInfo.gender %></span>
+  <br>
+  <br>
+  <p>Date of Birth</p>
+  <span><%= userInfo.dob.getMonth() %> / <%= userInfo.dob.getDay()  %> / <%= userInfo.dob.getYear()-100 %></span>
+  <br>
+  <br>
+  <p>Username</p>
+  <span><%= userInfo.username %></span>
+  <br>
+  <br>
+  <p>Email</p>
+  <span><%= userInfo.email %></span> 
+  <br>
+  <br>
+  <p>Phone</p>
+  <span><%= userInfo.phone %></span> 
+  <br>
+  <br>
 
-  <a href="/account/register/">Sign Up</a>
- </body>
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+  </body>
 </html>

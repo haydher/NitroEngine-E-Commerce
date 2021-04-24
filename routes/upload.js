@@ -2,43 +2,27 @@ const { User } = require("../models/user");
 const { Item, validateItem } = require("../models/item");
 const { Hero, validateHero } = require("../models/hero");
 const { Collection, validateCollection } = require("../models/collection");
+const {authToken} = require("../middleware/authToken");
 const { reqLoginTrue } = require("../middleware/authUser");
 const admin = require("../middleware/admin");
-const getUserId = require("../middleware/getUserId");
 const fileStorage = require("../middleware/uploadFile");
-const mongoose = require("mongoose");
 const express = require("express");
-const passport = require("passport");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const ejs = require("ejs");
 const router = express.Router();
 const env = require("dotenv").config();
 const multer = require("multer");
-// to change paths and delete the old image if there was an error
 const path = require("path");
 const fs = require("fs");
 
 router.use(express.urlencoded({ extended: true }));
 
-router.use(
- session({
-  secret: process.env.SECRET_SESSION_TOKEN,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: "mongodb://localhost/NitroEngine" }),
- })
-);
-router.use(passport.initialize());
-router.use(passport.session());
-
 const upload = multer({ storage: fileStorage });
 
-router.get("/item", [reqLoginTrue, admin], async (req, res) => {
+router.get("/item", [authToken, reqLoginTrue, admin], async (req, res) => {
  res.render("uploadItem");
 });
 
-router.post("/item", [reqLoginTrue, admin, getUserId], upload.array("images", 10), async (req, res) => {
+router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 10), async (req, res) => {
  const imgPath = path.join(__dirname + "/../public/imgUploads/" + req.body.category);
 
  const validate = validateItem({
@@ -81,12 +65,12 @@ router.post("/item", [reqLoginTrue, admin, getUserId], upload.array("images", 10
  res.render("uploadItem", { message: "File Uploaded Successfully" });
 });
 
-router.get("/hero", [reqLoginTrue, admin], async (req, res) => {
+router.get("/hero", [authToken, reqLoginTrue, admin], async (req, res) => {
  res.render("uploadHero", {id: req.query.id});
 });
 
 router.post("/hero", 
-[reqLoginTrue, admin, getUserId],  
+[authToken, reqLoginTrue, admin],  
 upload.fields([{name: 'heroCoverImg'},{name: 'heroItemImg'}]),
 async (req, res) => {
  let heroCoverImg,heroItemImg
@@ -130,12 +114,12 @@ async (req, res) => {
 });
 
 
-router.get("/collection", [reqLoginTrue, admin], async (req, res) => {
+router.get("/collection", [authToken, reqLoginTrue, admin], async (req, res) => {
  res.render("uploadCollections");
 });
 
 router.post("/collection", 
-[reqLoginTrue, admin, getUserId],  
+[authToken, reqLoginTrue, admin],  
 upload.fields([{name: 'collectionImg'}]),
 async (req, res) => {
 

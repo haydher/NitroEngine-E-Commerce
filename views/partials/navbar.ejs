@@ -63,12 +63,12 @@
 
        <% if (userInfo.isAdmin) { %>
         <a href="/upload/hero"><li>Upload Hero Item</li></a>
-        <a href="/upload/collections"><li>Upload Collections</li></a>
+        <a href="/upload/collection"><li>Upload Collections</li></a>
         <a href="/upload/item"><li>Upload Item</li></a>
        <% } %>
 
        <a href="/account"><li>Account</li></a>
-       <form action="/account/logout?_method=DELETE" method="POST">
+       <form action="/account/logout" method="POST">
        <button class="logout">Logout</button></a>
       </form>
       </ul>

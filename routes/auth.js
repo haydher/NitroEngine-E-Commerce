@@ -1,76 +1,28 @@
-const { User, validateUser } = require("../models/user");
+const { User, validateUser, validateLogin } = require("../models/user");
 const { reqLoginTrue, reqLoginFalse } = require("../middleware/authUser");
+const {authToken} = require("../middleware/authToken");
 const express = require("express");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const router = express.Router();
 const env = require("dotenv").config();
-const passport = require("passport");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const flash = require("express-flash");
-const methodOverride = require("method-override");
-const LocalStrategy = require("passport-local").Strategy;
-
-console.log("IN AUTH.JS")
 
 router.use(express.urlencoded({ extended: true }));
 // used for router.delete to override the post method
-router.use(methodOverride("_method"));
 
-passport.use(new LocalStrategy((username, password, done)=> {
-  User.findOne({ username: username }, function (err, user) {
-   if (err) {
-    console.log("error in passport, (auth.js line 24)", err);
-    return done(err);
-   }
-   if (!user) {
-    return done(null, false, { message: "No User with that username exists" });
-   }
-   if (!user.verifyPassword(password)) {
-    return done(null, false, { message: "Password is incorrect" });
-   }
-   return done(null, user);
-  });
- })
-);
-
-//  saves the use session
-passport.serializeUser(function (user, done) {
- done(null, user.id);
-});
-//  unsaves the user session
-passport.deserializeUser(function (id, done) {
- User.findById(id, function (err, user) {
-  done(err, user);
- });
-});
-// initialize the flash to show error messages
-router.use(flash());
-// initialize session
-router.use(
- session({
-  secret: process.env.SECRET_SESSION_TOKEN,
-  resave: true,
-  saveUninitialized: false,
-  store: MongoStore.create({mongoUrl: process.env.DB}),
- })
-);
-router.use(passport.initialize());
-router.use(passport.session());
-
-
-router.get("/", reqLoginTrue, async (req, res) => {
- res.render("account")
+router.get("/", [authToken, reqLoginTrue], async (req, res) => {
+ let user = await User.findById(req.userId).select("-passport")
+ if(!user || user == undefined || user.length < 1) return res.status(404).send("Account not found")
+ res.render("account", {user})
 })
 // show the signup page
-router.get("/register", reqLoginFalse, async (req, res) => {
+router.get("/register", [authToken, reqLoginFalse] , async (req, res) => {
  res.render("register");
 });
 // post data to sign up page
-router.post("/register", reqLoginFalse, async (req, res) => {
- console.log("POSTING A USER IN REGISTER");
+router.post("/register", [authToken, reqLoginFalse], async (req, res) => {
  const validate = validateUser(req.body);
  if (validate.error) return res.status(400).send(validate.error.details[0].message);
 
@@ -86,32 +38,37 @@ router.post("/register", reqLoginFalse, async (req, res) => {
  user.password = await bcrypt.hash(user.password, salt);
 
  user = await user.save();
- res.redirect("/");
- // res.send("User signed up successfully");
+ 
+ let token = user.generateAuthToken()
+ 
+ res.cookie('token', token).redirect("/");
 });
 
 // get to the login page
-router.get("/login", reqLoginFalse, async (req, res) => {
+router.get("/login",  [authToken, reqLoginFalse], async (req, res) => {
  res.render("login");
 });
 
-router.post(
- "/login",
- passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/account/login",
-  failureFlash: true,
- }),
- (req, res) => {
-  res.rendredirecter("/");
- }
-);
+router.post("/login", async (req, res) => {
+  const validate = validateLogin(req.body);
+  if (validate.error) return res.status(400).send(validate.error.details[0].message);
 
-router.get("/changepassword", reqLoginTrue, async (req, res) => {
+  let user = await User.find({ username: req.body.username });
+  if (user.length < 0 || user == undefined) return res.status(400).send("Username doesnt exist");
+
+  let password = user[0].verifyPassword(req.body.password)
+  if(!password) return res.send("Invalid Password")
+
+  let token = user[0].generateAuthToken()
+ 
+  res.cookie('token', token).redirect("/");
+});
+
+router.get("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
  res.render("changePass");
 });
 
-router.post("/changepassword", reqLoginTrue, async (req, res) => {
+router.post("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
  let userId;
  try {
   if (req.session.passport != undefined) {
@@ -146,10 +103,8 @@ router.post("/changepassword", reqLoginTrue, async (req, res) => {
 });
 
 // logout the session
-router.delete("/logout", reqLoginTrue, (req, res) => {
- req.logOut();
- res.redirect("/");
+router.post("/logout", [authToken, reqLoginTrue], (req, res) => {
+ res.cookie("token", "", {expire: Date.now()}).redirect("/");
 });
-console.log("Exporting auth.js")
 
 module.exports = router;

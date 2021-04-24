@@ -1,20 +1,17 @@
 const { User } = require("../models/user");
 const { Item } = require("../models/item");
+const {authToken} = require("../middleware/authToken");
 const { reqLoginTrue } = require("../middleware/authUser");
 const admin = require("../middleware/admin");
-const getUserId = require("../middleware/getUserId");
 const express = require("express");
-const passport = require("passport");
 const ejs = require("ejs");
 const router = express.Router();
 const env = require("dotenv").config();
 
 router.use(express.urlencoded({ extended: true }));
 
-router.use(passport.initialize());
-router.use(passport.session());
+router.get("/", [authToken], async (req, res) => {
 
-router.get("/", getUserId, async (req, res) => {
  let user = await User.findById(req.userId).select("-password");
  if(user == undefined) user = undefined
  let searchField = req.query.collections || req.query.search
@@ -46,10 +43,7 @@ router.get("/", getUserId, async (req, res) => {
   return res.status(404).send("no item with that search found")
 });
 
-
-router.get("/catalog", [reqLoginTrue, admin, getUserId], async (req, res) => {
-
- console.log("IS AUTHENTICATED ",req.isAuthenticated())
+router.get("/catalog", [authToken, reqLoginTrue, admin], async (req, res) => {
 
  const user = await User.findById(req.userId).select("-password");
 
@@ -62,8 +56,7 @@ router.get("/catalog", [reqLoginTrue, admin, getUserId], async (req, res) => {
  res.render("catalog", {item})
 });
 
-
-router.post("/searchResult", getUserId, async (req, res) => {
+router.post("/searchResult", [authToken], async (req, res) => {
   console.log("SEARCH RESULT", req.body.searchValue)
 
   const user = await User.findById(req.userId).select("-password");
@@ -84,7 +77,6 @@ router.post("/searchResult", getUserId, async (req, res) => {
   // res.render("catalog", {item})
   res.json()
 });
-
 
 function getUpperCase(string){
  if (typeof string !== 'string') return ''

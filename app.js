@@ -4,7 +4,6 @@ const auth = require("./routes/auth");
 const item = require("./routes/item");
 const selectedItem = require("./routes/selectedItem");
 const cart = require("./routes/cart");
-const test = require("./routes/test");
 const ejs = require("ejs");
 const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
@@ -28,9 +27,6 @@ app.use("/imgUploads", express.static(__dirname + "/public/imgUploads"));
 app.set("view engine", "ejs");
 
 app.use("/", home);
-app.use("/test", (req, res)=> {
- res.send("in test")
-});
 app.use("/upload", upload);
 app.use("/account", auth);
 app.use("/item", item);

@@ -2,11 +2,10 @@ const { Catalog, validateInput } = require("../models/catalog");
 const { Customer, validateCustomer } = require("../models/customer");
 const express = require("express");
 const router = express.Router();
-// parses the url and changes it to key value. so key=value and fill up the post req
+
 router.use(express.urlencoded({ extended: true }));
 
 router.get("/", async (req, res) => {
- // if (catalog[0].type != undefined) console.log(catalog[0].type);
  const catalog = await Catalog.find();
  res.send(catalog);
 });

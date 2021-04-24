@@ -1,6 +1,7 @@
 
 const Joi = require("joi");
-const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const express = require("express");
 
@@ -24,6 +25,14 @@ const userSchema = new mongoose.Schema({
  },
  lastName: {
   type: String,
+  required: true,
+ },
+ gender: {
+  type: String,
+  required: true,
+ },
+ dob: {
+  type: Date,
   required: true,
  },
  username: {
@@ -60,12 +69,18 @@ userSchema.methods.verifyPassword = function (password) {
  return bcrypt.compareSync(password, this.password);
 };
 
+userSchema.methods.generateAuthToken = function () {
+ return jwt.sign({ _id: this.id, isAdmin: this.isAdmin }, process.env.JWT_TOKEN);
+};
 const User = mongoose.model("Users", userSchema);
+
 
 function validateUser(params) {
  const schema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
+  gender: Joi.string().required(),
+  dob: Joi.date().required(),
   username: Joi.string().required(),
   email: Joi.string().required().email(),
   phone: Joi.string().required(),
@@ -75,8 +90,18 @@ function validateUser(params) {
  return schema.validate(params);
 }
 
+
+function validateLogin(params) {
+ const schema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().required(),
+ });
+ return schema.validate(params);
+}
+
 module.exports.User = User;
 module.exports.validateUser = validateUser;
+module.exports.validateLogin = validateLogin;
 
 
 
