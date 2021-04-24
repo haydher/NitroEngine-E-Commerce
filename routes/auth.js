@@ -20,7 +20,7 @@ router.get("/", [authToken, reqLoginTrue], async (req, res) => {
 // show the signup page
 router.get("/register", [authToken, reqLoginFalse] , async (req, res) => {
  res.render("register");
-});
+}); 
 // post data to sign up page
 router.post("/register", [authToken, reqLoginFalse], async (req, res) => {
  const validate = validateUser(req.body);

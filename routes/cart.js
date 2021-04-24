@@ -54,7 +54,7 @@ router.get("/", [authToken], async (req, res) => {
        },
       },{ useUnifiedTopology: true }
      );
-   }
+   } 
   //  console.log("User cart", user)
   //  console.log("user.userCart[0].itemId", user.userCart[0].itemId)
   //  console.log("user.userCart[0].size", user.userCart[0].size)
