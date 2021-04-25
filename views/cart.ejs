@@ -24,12 +24,13 @@
   <%  item.forEach(e => { %>
    <% totalPrice += e.price %>
   <% });  %> 
-  <% return totalPrice %> 
+  <% return totalPrice.toFixed(2) %> 
  <% } %> 
 
  
  <!-- NavBar -->
- <%- include("./partials/navbar", {userInfo}) %>
+  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
  
   <!-- coupon -->
  
@@ -96,7 +97,7 @@
 
     <div class="orderInfoContainer">
      <p class="orderinfo">Total Cost</p> 
-     <p class="cost">$<%= totalPrice %></p>
+     <p class="cost">$<%= totalPrice.toFixed(2) %></p>
     </div>
 
     <button class="btn btn3">PROCEED TO CHECKOUT</button>

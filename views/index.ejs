@@ -18,17 +18,16 @@
   <% if (locals.item) { %> 
   <%  newArrivals = item %>
   <% } %> 
-
   <% let collection %> 
   <% if (locals.collectionResult) { %> 
   <%  collection = collectionResult %>
   <% } %> 
-
   <% function getRandArr(arr) { %>
     <% return Math.floor(Math.random() * arr.length); %>
   <% } %> 
   <!-- Header -->
-  <%-  include("./partials/navbar", {userInfo}) %> 
+  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
   <!-- Hero -->
 

@@ -82,12 +82,19 @@
     <% } %> 
      <!-- <img src="/imgs/icons/settingIcon.svg" alt="user settings" /> -->
 
+     
      <div class="itemCartContainer">
       <a href="/cart">
        <img src="/imgs/icons/cartIcon.svg" alt="item cart" />
+       <% if (locals.cartCount) { %>
+        <div class="cartCount cartCountActive">
+          <span><%= cartCount %></span>
+         </div>
+        <% } else {%> 
        <div class="cartCount ">
         <span></span>
        </div>
+       <% } %> 
       </a>
      </div>
     </div>

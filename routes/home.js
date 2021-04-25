@@ -20,8 +20,11 @@ router.get("/",authToken, async (req, res) => {
  let item = await Item.find()
  if (!item) return res.status(500).send('Invalid Search.');
 
+ let itemInCart = user?.userCart[0]?.itemId.includes(req.params.id)
+ if(itemInCart == undefined) itemInCart = false
+
  if (user != undefined && item.length > 0 &&  heroResult.length > 0 &&  collectionResult.length > 0){
-  return res.render("index", { user, item, heroResult, collectionResult });
+  return res.render("index", { user, item, heroResult, collectionResult, itemInCart });
  }
  
  else if (item == undefined || item.length < 1 || 

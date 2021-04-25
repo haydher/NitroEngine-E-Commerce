@@ -17,10 +17,14 @@
   <% if (locals.catalog) { %> 
   <%  items = catalog %>
   <% } %> 
+  <% let itemInCartBol %> 
+  <% if (locals.itemInCart) { %> 
+  <%  itemInCartBol = itemInCart %>
+  <% } %> 
 
   <!-- header -->
-  <%- include("./partials/navbar", {userInfo}) %> 
-  
+  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
   <!-- coupon -->
   
   <div class="couponContainer">
@@ -51,9 +55,15 @@
         <div class="sizeContainer">
           <% let size = selectedItem.sizes.trim().split(", "); %> 
           <% size.forEach(element => { %>
-            <div class="size ">
-              <span><%= element %></span>
-            </div>
+            <% if (itemInCartBol) { %>
+              <div class="size sizeDisabled">
+                <span><%= element %></span>
+              </div>
+            <% } else { %>
+              <div class="size">
+                <span><%= element %></span>
+              </div>
+            <% } %>
           <% }) %>
         </div>
         <div class="priceContainer">
@@ -64,7 +74,13 @@
           <h3 class="price discrountPrice">$69.69</h3>
            -->
         </div>
-        <button class="btn btn3 cartBtn" id="<%=selectedItem._id%>">ADD TO CART</button>
+        <% if (itemInCartBol) { %>
+          <button class="btn btn3 cartBtn btnDisabled" id="<%=selectedItem._id%>">Item Added to Cart</button>
+        <% } else { %>
+          <button class="btn btn3 cartBtn" id="<%=selectedItem._id%>">ADD TO CART</button>
+        <% } %>
+
+        
       </div>
     </div>
   </div>
@@ -115,5 +131,6 @@
     <%- include("./partials/footer") %> 
   </footer>
     <%- include("./partials/scripts") %> 
+    <script src="/js/selectedItem.js"></script>
   </body>
 </html>

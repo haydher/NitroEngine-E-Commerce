@@ -22,9 +22,11 @@ router.get("/:id", authToken, async (req, res) => {
 
  const user = await User.findById(req.userId).select("-password");
 
- if (user != undefined && selectedItemWithId != undefined) return res.render("selectedItem", { user, selectedItemWithId, catalog });
+ let itemInCart = user?.userCart[0]?.itemId.includes(req.params.id)
+ if(itemInCart == undefined) itemInCart = false
+ if (user != undefined && selectedItemWithId != undefined) return res.render("selectedItem", { user, selectedItemWithId, catalog, itemInCart });
  else if ( selectedItemWithId == undefined) return res.status(404).send("Page not found")
- res.render("selectedItem", {selectedItemWithId, catalog})
+ res.render("selectedItem", {selectedItemWithId, catalog, itemInCart})
 });
 
 module.exports = router;

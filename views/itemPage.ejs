@@ -23,7 +23,8 @@
   <% } %> 
 
   <!-- Header -->
-  <%- include("./partials/navbar", {userInfo}) %> 
+  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
   <!-- New Arrivals -->
 

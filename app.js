@@ -33,5 +33,8 @@ app.use("/item", item);
 app.use("/selectedItem", selectedItem);
 app.use("/cart", cart);
 
+app.use((req, res, next) => {
+ res.status(404).send("404 Could not find Page")
+})
 const port = process.env.PORT ||  9999;
 app.listen(port, () => console.log(`connected to the port ${port}`));
