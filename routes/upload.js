@@ -13,6 +13,7 @@ const env = require("dotenv").config();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const {uploadFile, deleteImg} = require("./s3")
 
 router.use(express.urlencoded({ extended: true }));
 
@@ -23,7 +24,7 @@ router.get("/item", [authToken, reqLoginTrue, admin], async (req, res) => {
 });
 
 router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 10), async (req, res) => {
- const imgPath = path.join(__dirname + "/../public/imgUploads/" + req.body.category);
+ const imgPath = path.join(__dirname + "/../public/images");
 
  const validate = validateItem({
   price: req.body.price,
@@ -46,7 +47,7 @@ router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 1
  let item = await Item.find({ name: req.body.name });
 
  if (item.length > 0 && item) return res.status(400).send("Item with that name already exists");
-
+ 
  item = new Item({
   price: req.body.price,
   name: req.body.name,
@@ -57,12 +58,24 @@ router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 1
   gender: req.body.gender,
   tags: req.body.tags,
   sizes: req.body.sizes,
-  images: changeFileToArray(req.body.category, req.files),
+  images: changeFileToArray(req.files),
   author: req.userId,
  });
-
  item = await item.save();
- res.render("uploadItem", { message: "File Uploaded Successfully" });
+ 
+ // upload image to aws s3
+ let promises = [];
+ for(let i = 0; i < req.files.length; i++){
+  let file = req.files[i];
+  promises.push(uploadFile(file));
+ }
+ Promise.all(promises).then((data)=>{
+  deleteFile(imgPath, req.files)
+  return res.render("uploadItem", { message: "File Uploaded Successfully" });
+ }).catch((err)=>{
+  return res.send(err.stack);
+ }) 
+ // res.render("uploadItem", { message: "File Uploaded Successfully" });
 });
 
 router.get("/hero", [authToken, reqLoginTrue, admin], async (req, res) => {
@@ -74,7 +87,8 @@ router.post("/hero",
 upload.fields([{name: 'heroCoverImg'},{name: 'heroItemImg'}]),
 async (req, res) => {
  let heroCoverImg,heroItemImg
- console.log("req.files",req.files)
+ const imgPath = path.join(__dirname + "/../public/images");
+ 
  if(req.files.heroCoverImg != undefined && req.files.heroItemImg != undefined) {
   heroCoverImg = req.files?.heroCoverImg[0].originalname
   heroItemImg = req.files?.heroItemImg[0].originalname
@@ -95,7 +109,7 @@ async (req, res) => {
   return res.status(400).render("uploadHero", { message: validate.error.details[0].message, data: req.body, id: req.body.itemId });
  }
  let hero = await Hero.find({itemId: req.body.itemId});
- console.log("HERO__", hero)
+ 
  if (hero != null && hero.length > 0 && hero)
   return res.status(400).render("uploadHero", 
   { message:"Hero for this item already exists", data: req.body, id: req.body.itemId });
@@ -110,7 +124,19 @@ async (req, res) => {
   heroImage: heroItemImg,
  });
  hero = await hero.save();
- res.render("catalog", { message: "File to Hero Uploaded Successfully", });
+ // upload image to aws s3
+ let promises = [];
+ promises.push(uploadFile(req.files?.heroCoverImg[0]));
+ promises.push(uploadFile(req.files?.heroItemImg[0]));
+ Promise.all(promises).then((data)=>{
+  deleteFile(imgPath, req.files?.heroCoverImg)
+  deleteFile(imgPath, req.files?.heroItemImg)
+  return res.redirect("../item/catalog");
+ }).catch((err)=>{
+  return res.render("uploadHero", { message: "Error Uploading file to AWS S3", });
+ }) 
+
+ // res.render("catalog", { message: "File to Hero Uploaded Successfully", });
 });
 
 
@@ -122,6 +148,8 @@ router.post("/collection",
 [authToken, reqLoginTrue, admin],  
 upload.fields([{name: 'collectionImg'}]),
 async (req, res) => {
+
+ const imgPath = path.join(__dirname + "/../public/images");
 
  let collectionImg
  if(req.files.collectionImg != undefined)  collectionImg = req.files?.collectionImg[0].originalname
@@ -147,28 +175,42 @@ async (req, res) => {
   author: req.userId,
   collectionImg: collectionImg,
  });
- console.log(collection)
+ 
  collection = await collection.save();
- res.render("uploadCollections", { message: "File to Collections Uploaded Successfully"});
+ console.log("req.file ",req.file )
+ console.log("req.files",req.files.collectionImg)
+ // upload image to aws s3
+ let promises = [];
+ for(let i = 0; i < req.files.collectionImg.length; i++){
+  let file = req.files.collectionImg[i];
+  promises.push(uploadFile(file));
+ }
+ Promise.all(promises).then((data)=>{
+  deleteFile(imgPath, req.files.collectionImg)
+  return res.render("uploadCollections", { message: "File to Collections Uploaded Successfully"});
+ }).catch((err)=>{
+  return res.send(err.stack);
+ }) 
+
+ // res.render("uploadCollections", { message: "File to Collections Uploaded Successfully"});
 });
 
-function changeFileToArray(category, img) {
+function changeFileToArray(img) {
  let returnArr = [];
  img.forEach((element) => {
-  let imgPath = `/${category}/${element.filename}`;
-  returnArr.push(imgPath);
+  returnArr.push(element.filename);
  });
  return returnArr;
 }
 
 function deleteFile(path, file) {
  let img;
- file.forEach((element) => {
-  img = `${path}\\${element.originalname}`;
+ for(let i = 0; i < file.length; i++){
+  img = `${path}\\${file[i].originalname}`;
   fs.unlink(img, (err) => {
    if (err) throw err;
   });
- });
+ }
 }
 
 module.exports = router;

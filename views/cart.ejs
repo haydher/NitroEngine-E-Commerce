@@ -29,7 +29,7 @@
 
  
  <!-- NavBar -->
-  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
  
   <!-- coupon -->
@@ -59,7 +59,7 @@
    <% for( let i = 0; i < item.length; i++ ) { %>
     <div class="cardItem">
      <div class="cartItemImg">
-      <img src="./imgUploads/<%=item[i].images[0]%>">
+      <img src="/images/<%=item[i].images[0]%>">
      </div>
      <div class="cartItemInfo">
       <h2 class="cartItemTitle"><%=item[i].name%></h2>

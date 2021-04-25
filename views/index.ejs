@@ -26,7 +26,7 @@
     <% return Math.floor(Math.random() * arr.length); %>
   <% } %> 
   <!-- Header -->
-  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
   <!-- Hero -->
@@ -34,7 +34,7 @@
   <% let randHeroIndex = getRandArr(hero) %> 
   <section class="hero heroContainer" 
   style="background-image:
-   linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url('../imgUploads/hero/<%=hero[randHeroIndex].heroCover%>');
+   linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url('/images/<%=hero[randHeroIndex].heroCover%>');
    ">
    <div class="heroContent">
     <div class="heroInfo">
@@ -44,7 +44,7 @@
      <a href="/selectedItem/<%=hero[randHeroIndex].itemId%>"><button class="btn btn1">SHOP</button></a>
     </div>
     <div class="heroItemImg">
-     <img src="/imgUploads/hero/<%=hero[randHeroIndex].heroImage%>" alt="" />
+     <img src="/images/<%=hero[randHeroIndex].heroImage%>" alt="" />
     </div>
    </div>
   </section>
@@ -83,7 +83,7 @@
 
         <div class="card">
           <div class="cardImgContainer">
-            <img src="/imgUploads/<%=newArrivals[randArrIndex].images[0]%>" />
+            <img src="/images/<%=newArrivals[randArrIndex].images[0]%>" />
           </div>
           <div class="cardInfo">
             <p><%=newArrivals[randArrIndex].name%></p>
@@ -178,7 +178,7 @@
       <% }%> 
       <div class="collection" 
       style="background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%),
-      url('../imgUploads/collections/<%=collection[randColIndex].collectionImg%>');">
+      url('/images/<%=collection[randColIndex].collectionImg%>');">
        <div class="collectionInfo">
          <h1><%=collection[randColIndex].title%></h1>
          <a href="/item?collections=<%=collection[randColIndex].category%>">

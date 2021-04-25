@@ -1,3 +1,4 @@
+const {downloadImgFromS3} = require("./routes/s3")
 const home = require("./routes/home");
 const upload = require("./routes/upload");
 const auth = require("./routes/auth");
@@ -32,6 +33,12 @@ app.use("/account", auth);
 app.use("/item", item);
 app.use("/selectedItem", selectedItem);
 app.use("/cart", cart);
+
+app.get("/images/:key", (req, res)=>{
+ const key = req.params.key
+ const readStream = downloadImgFromS3(key)
+ readStream.pipe(res)
+})
 
 app.use((req, res, next) => {
  res.status(404).send("404 Could not find Page")

@@ -29,9 +29,10 @@
 <body>
  
  <% let catalog  %> 
- <% if(locals.item) %> 
+ <% if(locals.item) {%> 
  <%  catalog = item%> 
  <% //console.log("author", catalog[0].author.username) %> 
+ <%  }%> 
 
  <% catalog.forEach(item => { %>
   <h5>Name</h5>
@@ -63,7 +64,7 @@
 
  <h5>Images</h5>
   <% item.images.forEach(imgs => { %>
-   <img src="/imgUploads/<%=imgs%>"/>
+   <img src="/images/<%=imgs%>"/>
   <% }) %>
   <br><br>
   <a href="/upload/hero?id=<%-item._id%>" ><button>Upload Hero</button></a> 

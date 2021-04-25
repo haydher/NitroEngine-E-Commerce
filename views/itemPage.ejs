@@ -23,7 +23,7 @@
   <% } %> 
 
   <!-- Header -->
-  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
   <!-- New Arrivals -->
@@ -52,7 +52,7 @@
       <a href="/selectedItem/<%=item[randIndex]._id%>">
       <div class="card">
         <div class="cardImgContainer">
-          <img src="/imgUploads/<%=item[randIndex].images[0]%>"/>
+          <img src="/images/<%=item[randIndex].images[0]%>"/>
           <div class="cardInfo">
           <p class="itemHeading"><%= item[randIndex].name%></p>
           </div>
@@ -201,7 +201,7 @@
           <div class="itemCard">
             <a href="/selectedItem/<%= item._id%>">
               <div class="itemCardImgContainer">
-                <img src="/imgUploads/<%=item.images[0]%>"/>
+                <img src="/images/<%=item.images[0]%>"/>
               </div>
             </a>
             <p class="itemHeading"><%= item.name%></p>

@@ -23,7 +23,7 @@
   <% } %> 
 
   <!-- header -->
-  <% let cartCount = userInfo.userCart[0]?.itemId.length %> 
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
   <!-- coupon -->
   
@@ -37,7 +37,7 @@
 
   <div class="itemContainer">
     <div class="itemMainImgContainer">
-      <img src="/imgUploads/<%=selectedItem.images[0]%>"/>
+      <img src="/images/<%=selectedItem.images[0]%>"/>
     </div>
     <div class="itemDetailContainer">
       <div class="itemDetail">
@@ -45,7 +45,7 @@
         <p class="itemType"><%=selectedItem.type%></p>
         <div class="moreImgs">
           <% selectedItem.images.forEach(img => { %>
-            <img src="/imgUploads/<%=img%>"/>
+            <img src="/images/<%=img%>"/>
           <% }) %>
         </div>
         <h5 class="descriptionHeader">DESCRIPTION</h5>
@@ -112,7 +112,7 @@
      <a href="/selectedItem/<%=items[randIndex]._id%>">
      <div class="card">
        <div class="cardImgContainer">
-         <img src="/imgUploads/<%=items[randIndex].images[0]%>"/>
+         <img src="/images/<%=items[randIndex].images[0]%>"/>
          <div class="cardInfo">
          <p class="itemHeading"><%= items[randIndex].name%></p>
          </div>
