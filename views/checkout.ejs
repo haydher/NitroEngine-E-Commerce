@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <%- include("./partials/head", {title : "Checkout"}) %> 
+</head>
+<body>
+ 
+ <% let item = [], size, userInfo %> 
+ 
+ <% if (locals.user) { %> 
+ <%  userInfo = user %>
+ <% } %> 
+
+ <% if (locals.itemArr) { %> 
+ <%  item = itemArr %>
+ <% } %> 
+
+ <% if (locals.itemSize) { %> 
+ <%  size = itemSize %>
+ <% } %> 
+
+ <% let totalPrice = 0 %> 
+ <% function getTotalCost(){ %> 
+  <%  item.forEach(e => { %>
+   <% totalPrice += e.price %>
+  <% });  %> 
+  <% return totalPrice.toFixed(2) %> 
+ <% } %> 
+
+ 
+ <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+ 
+ <section class="checkOutInfo">
+  <div class="userInfo">
+   <h3 class="cartHeader">Delivery Information</h3>
+   <div class="delInfoContainer">
+     <input type="text" name="firstName" placeholder="First Name" required>
+     <input type="text" name="lastName" placeholder="Last Name" required>
+     <input type="text" name="strAdd" placeholder="Street Address" required class="inputLong">
+     <input type="text" name="zipCode" placeholder="Zip Code" required>
+     <input type="text" name="city" placeholder="City" required>
+     <input type="text" name="state" placeholder="State" required>
+     <input type="text" name="phone" placeholder="Phone" required>
+     <input type="text" name="email" placeholder="Email" required class="inputLong">
+   </div>
+   
+   <div class="delInfoPayment">
+    <h3 class="cartHeader">Payment</h3>
+    <div class="acceptedPayment">
+     <img src="imgs/icons/paymentIcons/visa.svg" alt="Visa Payment Method">
+     <img src="imgs/icons/paymentIcons/amex.svg" alt="American Express Payment Method">
+     <img src="imgs/icons/paymentIcons/paypal.svg" alt="PayPal Payment Method">
+     <img src="imgs/icons/paymentIcons/mastercard.svg" alt="Mastercard Payment Method">
+     <img src="imgs/icons/paymentIcons/applepay.svg" alt="ApplePay Payment Method">
+     <img src="imgs/icons/paymentIcons/googlepay.svg" alt="GooglePay Payment Method">
+    </div>
+    <input type="text" name="firstName" placeholder="First Name" required>
+    <input type="text" name="lastName" placeholder="Last Name" required>
+    <input type="text" name="strAdd" placeholder="Street Address" required class="inputLong">
+    <input type="text" name="zipCode" placeholder="Zip Code" required>
+    <input type="text" name="city" placeholder="City" required>
+    <input type="text" name="state" placeholder="State" required>
+    <input type="text" name="phone" placeholder="Phone" required>
+    <input type="text" name="email" placeholder="Email" required class="inputLong">
+    <input type="text" name="cardNumber" placeholder="Card Number" required class="inputLong">
+    <input type="text" name="expDate" placeholder="Expiration Date - MM/YY">
+    <input type="text" name="ccv" placeholder="CCV - XXX">
+   </div>
+
+   
+  <div class="orderMainContainer">
+   <div class="orderSummaryContainer">
+
+    <h1 class="OrderSummaryHeader">Order Summary</h1>
+    <div class="orderInfoContainer">
+     <p class="orderInfo">2 Products</p> 
+     <p class="cost">$222</p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Shipping Cost</p> 
+     <p class="cost">$50</p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderinfo">Total Cost</p> 
+     <p class="cost">$122</p>
+    </div>
+
+    <h3 class="cartHeader">Items In Cart</h3>
+    <div class="cardItem">
+     <div class="cartItemImg">
+      <img src="imgs/mainImgs/collectionClothing.jpg">
+     </div>
+     <div class="cartItemInfo">
+      <h2 class="cartItemTitle">Great SunRise Suit</h2>
+      <p class="cartItemType">Men Hoodie</p>
+      <p class="cartItemSize">Size: 7</p>
+      <p class="itemPrice">$123</p>
+     </div>
+    </div>
+    
+    <div class="cardItem">
+     <div class="cartItemImg">
+      <img src="imgs/mainImgs/collectionClothing.jpg">
+     </div>
+     <div class="cartItemInfo">
+      <h2 class="cartItemTitle">Great SunRise Suit</h2>
+      <p class="cartItemType">Men Hoodie</p>
+      <p class="cartItemSize">Size: 7</p>
+      <p class="itemPrice">$123</p>
+     </div>
+    </div>
+
+    <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+   </div>
+   </div>
+  </div>
+  </div>
+
+  
+  <div class="orderMainContainer secondContainer">
+   <div class="orderSummaryContainer">
+
+    <h1 class="OrderSummaryHeader">Order Summary</h1>
+    <div class="orderInfoContainer">
+     <p class="orderInfo">2 Products</p> 
+     <p class="cost">$222</p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Shipping Cost</p> 
+     <p class="cost">$50</p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderinfo">Total Cost</p> 
+     <p class="cost">$122</p>
+    </div>
+
+    <div class="cartItems">
+     <h3 class="cartHeader">Items In Cart</h3>
+     <div class="cardItem">
+      <div class="cartItemImg">
+       <img src="imgs/mainImgs/collectionClothing.jpg">
+      </div>
+      <div class="cartItemInfo">
+       <h2 class="cartItemTitle">Great SunRise Suit</h2>
+       <p class="cartItemType">Men Hoodie</p>
+       <p class="cartItemSize">Size: 7</p>
+       <p class="itemPrice">$123</p>
+      </div>
+     </div>
+     
+     <div class="cardItem">
+      <div class="cartItemImg">
+       <img src="imgs/mainImgs/collectionClothing.jpg">
+      </div>
+      <div class="cartItemInfo">
+       <h2 class="cartItemTitle">Great SunRise Suit</h2>
+       <p class="cartItemType">Men Hoodie</p>
+       <p class="cartItemSize">Size: 7</p>
+       <p class="itemPrice">$123</p>
+      </div>
+     </div>
+    </div>
+    
+    <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+   </div>
+
+
+   </div>
+  </div>
+ </section>
+
+ <!-- footer -->
+ <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>

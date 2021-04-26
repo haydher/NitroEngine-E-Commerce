@@ -5,6 +5,7 @@ const auth = require("./routes/auth");
 const item = require("./routes/item");
 const selectedItem = require("./routes/selectedItem");
 const cart = require("./routes/cart");
+const checkout = require("./routes/checkout");
 const ejs = require("ejs");
 const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
@@ -33,6 +34,7 @@ app.use("/account", auth);
 app.use("/item", item);
 app.use("/selectedItem", selectedItem);
 app.use("/cart", cart);
+app.use("/checkout", checkout);
 
 app.get("/images/:key", (req, res)=>{
  const key = req.params.key
