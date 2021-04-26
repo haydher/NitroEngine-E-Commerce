@@ -25,7 +25,7 @@ router.get("/item", [authToken, reqLoginTrue, admin], async (req, res) => {
 
 router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 10), async (req, res) => {
  const imgPath = path.join(__dirname + "/../public/images");
-
+ console.log("uploading item")
  const validate = validateItem({
   price: req.body.price,
   name: req.body.name,
@@ -40,14 +40,15 @@ router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 1
  });
 
  if (validate.error) {
+  console.log("validation failed")
   // if input is not valid then find the path the image was stored in, and delete it
-  deleteFile(imgPath, req.files);
+  // deleteFile(imgPath, req.files);
   return res.status(400).render("uploadItem", { message: validate.error.details[0].message, data: req.body });
  }
  let item = await Item.find({ name: req.body.name });
 
  if (item.length > 0 && item) return res.status(400).send("Item with that name already exists");
- 
+ console.log("file passed validation")
  item = new Item({
   price: req.body.price,
   name: req.body.name,
@@ -62,6 +63,7 @@ router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 1
   author: req.userId,
  });
  item = await item.save();
+ console.log("item saved on db", item)
  
  // upload image to aws s3
  let promises = [];
