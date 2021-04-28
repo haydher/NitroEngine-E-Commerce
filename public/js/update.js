@@ -52,11 +52,19 @@ function updateItem(id, params) {
  .then(data => resultMessage(id, data));
 }
 
-const dltBtn = document.querySelectorAll(".btnWarning")
-dltBtn.forEach(btn => {
+const dltItem = document.querySelectorAll(".btnWarning")
+dltItem.forEach(btn => {
  btn.addEventListener("click", (e)=>{
   const parent = document.getElementById(btn.id)
   parent.style.display = "none"
+  e.preventDefault()
+ })
+});
+
+const dltImg = document.querySelectorAll(".overLay img")
+dltBtn.forEach(btn => {
+ btn.addEventListener("click", (e)=>{
+  console.log("image id", btn.id)
   e.preventDefault()
  })
 });

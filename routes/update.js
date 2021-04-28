@@ -6,6 +6,7 @@ const {authToken} = require("../middleware/authToken");
 const { reqLoginTrue } = require("../middleware/authUser");
 const admin = require("../middleware/admin");
 const fileStorage = require("../middleware/uploadFile");
+const {uploadFile, deleteImg} = require("./s3")
 const express = require("express");
 const ejs = require("ejs");
 const router = express.Router();
@@ -13,7 +14,6 @@ const env = require("dotenv").config();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const {uploadFile, deleteImg} = require("./s3")
 
 router.use(express.urlencoded({ extended: true }));
 

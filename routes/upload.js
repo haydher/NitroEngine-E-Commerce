@@ -74,7 +74,7 @@ router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 1
   promises.push(uploadFile(file));
  }
  Promise.all(promises).then((data)=>{
-  deleteFile(imgPath, req.files)
+  // deleteFile(imgPath, req.files)
   return res.render("uploadItem", { message: "File Uploaded Successfully" });
  }).catch((err)=>{
   return res.send(err.stack);
