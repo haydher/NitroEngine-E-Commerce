@@ -1,5 +1,7 @@
 const { User } = require("../models/user");
 const { Item } = require("../models/item");
+const { Hero } = require("../models/hero");
+const { Collection } = require("../models/collection");
 const {authToken} = require("../middleware/authToken");
 const { reqLoginTrue } = require("../middleware/authUser");
 const admin = require("../middleware/admin");
@@ -56,6 +58,31 @@ router.get("/catalog", [authToken, reqLoginTrue, admin], async (req, res) => {
  res.render("catalog", {item})
 });
 
+router.get("/catalog/hero", [authToken, reqLoginTrue, admin], async (req, res) => {
+
+  const user = await User.findById(req.userId).select("-password");
+ 
+  let hero = await Hero.find()
+  .populate("author", "-password -phone")
+  if (!hero) return res.status(400).send('No Hero Exists.');
+  if (user != undefined && hero != undefined && hero.length > 0) return res.render("heroCatalog", { user, hero });
+  else if ( hero == undefined || hero.length < 1) return res.status(404).send("Page not found")
+  res.render("heroCatalog", {hero})
+ });
+
+router.get("/catalog/collections", [authToken, reqLoginTrue, admin], async (req, res) => {
+
+  const user = await User.findById(req.userId).select("-password");
+ 
+  let collection = await Collection.find()
+  .populate("author", "-password -phone")
+  if (!collection) return res.status(400).send('No Hero Exists.');
+  if (user != undefined && collection != undefined && collection.length > 0) return res.render("collectionCatalog", { user, collection });
+  else if ( collection == undefined || collection.length < 1) return res.status(404).send("Page not found")
+  res.render("collectionCatalog", {collection})
+});
+
+ 
 router.post("/searchResult", [authToken], async (req, res) => {
   console.log("SEARCH RESULT", req.body.searchValue)
 

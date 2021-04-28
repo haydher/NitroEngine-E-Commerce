@@ -5,7 +5,7 @@
 </head>
 <body>
  
- <% let item = [], size, userInfo %> 
+ <% let item, size, userInfo %> 
  
  <% if (locals.user) { %> 
  <%  userInfo = user %>
@@ -26,7 +26,6 @@
   <% });  %> 
   <% return totalPrice.toFixed(2) %> 
  <% } %> 
-
  
  <!-- NavBar -->
   <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
@@ -36,14 +35,14 @@
   <div class="userInfo">
    <h3 class="cartHeader">Delivery Information</h3>
    <div class="delInfoContainer">
-     <input type="text" name="firstName" placeholder="First Name" required>
-     <input type="text" name="lastName" placeholder="Last Name" required>
-     <input type="text" name="strAdd" placeholder="Street Address" required class="inputLong">
-     <input type="text" name="zipCode" placeholder="Zip Code" required>
-     <input type="text" name="city" placeholder="City" required>
-     <input type="text" name="state" placeholder="State" required>
-     <input type="text" name="phone" placeholder="Phone" required>
-     <input type="text" name="email" placeholder="Email" required class="inputLong">
+     <input type="text" name="firstName" placeholder="First Name" value="<%= userInfo.firstName %>" required class="required">
+     <input type="text" name="lastName" placeholder="Last Name" value="<%= userInfo.lastName %>"  required class="required">
+     <input type="text" name="strAdd" placeholder="Street Address" value="5 Main St" disabled  class="inputLong">
+     <input type="text" name="zipCode" placeholder="Zip Code"  value="02108" disabled >
+     <input type="text" name="city" placeholder="City" value="Boston" disabled  >
+     <input type="text" name="state" placeholder="State" value="MA" disabled >
+     <input type="text" name="phone" placeholder="Phone" value="<%= userInfo.phone %>"  required class="required">
+     <input type="text" name="email" placeholder="Email" value="<%= userInfo.email %>"  required class="inputLong required">
    </div>
    
    <div class="delInfoPayment">
@@ -56,120 +55,114 @@
      <img src="imgs/icons/paymentIcons/applepay.svg" alt="ApplePay Payment Method">
      <img src="imgs/icons/paymentIcons/googlepay.svg" alt="GooglePay Payment Method">
     </div>
-    <input type="text" name="firstName" placeholder="First Name" required>
-    <input type="text" name="lastName" placeholder="Last Name" required>
-    <input type="text" name="strAdd" placeholder="Street Address" required class="inputLong">
-    <input type="text" name="zipCode" placeholder="Zip Code" required>
-    <input type="text" name="city" placeholder="City" required>
-    <input type="text" name="state" placeholder="State" required>
-    <input type="text" name="phone" placeholder="Phone" required>
-    <input type="text" name="email" placeholder="Email" required class="inputLong">
-    <input type="text" name="cardNumber" placeholder="Card Number" required class="inputLong">
-    <input type="text" name="expDate" placeholder="Expiration Date - MM/YY">
-    <input type="text" name="ccv" placeholder="CCV - XXX">
+    <p class="errMessage">We are not accepting any payment options at the moment. 
+      We have gifted your account with <b>$<%= userInfo.giftValue %></b> for you to use towards your purchases. 
+      We are sorry for the inconvenience.
+    </p>
+    <input type="text" name="firstName" placeholder="First Name" disabled >
+    <input type="text" name="lastName" placeholder="Last Name" disabled >
+    <input type="text" name="strAdd" placeholder="Street Address" disabled  class="inputLong">
+    <input type="text" name="zipCode" placeholder="Zip Code" disabled >
+    <input type="text" name="city" placeholder="City" disabled >
+    <input type="text" name="state" placeholder="State" disabled >
+    <input type="text" name="phone" placeholder="Phone" disabled >
+    <input type="text" name="email" placeholder="Email" disabled  class="inputLong">
+    <input type="text" name="cardNumber" placeholder="Card Number" disabled  class="inputLong">
+    <input type="text" name="expDate" placeholder="Expiration Date - MM/YY" disabled  >
+    <input type="text" name="ccv" placeholder="CCV - XXX" disabled  >
    </div>
 
-   
   <div class="orderMainContainer">
    <div class="orderSummaryContainer">
 
     <h1 class="OrderSummaryHeader">Order Summary</h1>
     <div class="orderInfoContainer">
-     <p class="orderInfo">2 Products</p> 
-     <p class="cost">$222</p>
+     <p class="orderInfo"><%=itemArr.length %> Products</p> 
+     <p class="cost">$<%= getTotalCost() %> </p>
     </div>
 
     <div class="orderInfoContainer">
      <p class="orderInfo">Shipping Cost</p> 
-     <p class="cost">$50</p>
+     <p class="cost">$0</p>
     </div>
 
     <div class="orderInfoContainer">
      <p class="orderinfo">Total Cost</p> 
-     <p class="cost">$122</p>
+     <p class="cost">$<%= totalPrice.toFixed(2) %> </p>
     </div>
-
+    <br>
+    <div class="orderInfoContainer">
+      <p class="orderinfo">Remaining Balance</p> 
+      <p class="cost">$<%= user.giftValue.toFixed(2) - totalPrice.toFixed(2) %> </p>
+    </div>
+     
     <h3 class="cartHeader">Items In Cart</h3>
-    <div class="cardItem">
-     <div class="cartItemImg">
-      <img src="imgs/mainImgs/collectionClothing.jpg">
-     </div>
-     <div class="cartItemInfo">
-      <h2 class="cartItemTitle">Great SunRise Suit</h2>
-      <p class="cartItemType">Men Hoodie</p>
-      <p class="cartItemSize">Size: 7</p>
-      <p class="itemPrice">$123</p>
-     </div>
-    </div>
-    
-    <div class="cardItem">
-     <div class="cartItemImg">
-      <img src="imgs/mainImgs/collectionClothing.jpg">
-     </div>
-     <div class="cartItemInfo">
-      <h2 class="cartItemTitle">Great SunRise Suit</h2>
-      <p class="cartItemType">Men Hoodie</p>
-      <p class="cartItemSize">Size: 7</p>
-      <p class="itemPrice">$123</p>
-     </div>
-    </div>
-
-    <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+    <% for( let i = 0; i < item.length; i++ ) { %>
+      <div class="cardItem">
+       <div class="cartItemImg">
+        <img src="/images/<%=item[i].images[0]%>">
+       </div>
+       <div class="cartItemInfo">
+        <h2 class="cartItemTitle"><%=item[i].name%></h2>
+        <p class="cartItemType"><%=item[i].type%></p>
+        <p class="cartItemSize">Size: <%=size[i]%></p>
+        <p class="itemPrice">$<%=item[i].price%></p>
+       </div>
+      </div>
+     <% } %>
+      <form action="/receipt" method="POST">
+       <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+      </form>
    </div>
    </div>
   </div>
   </div>
-
   
   <div class="orderMainContainer secondContainer">
    <div class="orderSummaryContainer">
 
     <h1 class="OrderSummaryHeader">Order Summary</h1>
     <div class="orderInfoContainer">
-     <p class="orderInfo">2 Products</p> 
-     <p class="cost">$222</p>
+      <p class="orderInfo"><%=itemArr.length %> Products</p> 
+      <p class="cost">$<%= totalPrice.toFixed(2) %> </p>
+    </div>
+ 
+    <div class="orderInfoContainer">
+      <p class="orderInfo">Shipping Cost</p> 
+      <p class="cost">$0</p>
     </div>
 
     <div class="orderInfoContainer">
-     <p class="orderInfo">Shipping Cost</p> 
-     <p class="cost">$50</p>
+      <p class="orderinfo">Total Cost</p> 
+      <p class="cost">$<%= totalPrice.toFixed(2) %> </p>
     </div>
-
+    <br>
     <div class="orderInfoContainer">
-     <p class="orderinfo">Total Cost</p> 
-     <p class="cost">$122</p>
+      <p class="orderinfo">Remaining Balance</p> 
+      <p class="cost">$<%= user.giftValue.toFixed(2) - totalPrice.toFixed(2) %> </p>
     </div>
 
     <div class="cartItems">
      <h3 class="cartHeader">Items In Cart</h3>
-     <div class="cardItem">
-      <div class="cartItemImg">
-       <img src="imgs/mainImgs/collectionClothing.jpg">
+     <% for( let i = 0; i < item.length; i++ ) { %>
+      <div class="cardItem">
+       <div class="cartItemImg">
+        <img src="/images/<%=item[i].images[0]%>">
+       </div>
+       <div class="cartItemInfo">
+        <h2 class="cartItemTitle"><%=item[i].name%></h2>
+        <p class="cartItemType"><%=item[i].type%></p>
+        <p class="cartItemSize">Size: <%=size[i]%></p>
+        <p class="itemPrice">$<%=item[i].price%></p>
+       </div>
       </div>
-      <div class="cartItemInfo">
-       <h2 class="cartItemTitle">Great SunRise Suit</h2>
-       <p class="cartItemType">Men Hoodie</p>
-       <p class="cartItemSize">Size: 7</p>
-       <p class="itemPrice">$123</p>
-      </div>
-     </div>
-     
-     <div class="cardItem">
-      <div class="cartItemImg">
-       <img src="imgs/mainImgs/collectionClothing.jpg">
-      </div>
-      <div class="cartItemInfo">
-       <h2 class="cartItemTitle">Great SunRise Suit</h2>
-       <p class="cartItemType">Men Hoodie</p>
-       <p class="cartItemSize">Size: 7</p>
-       <p class="itemPrice">$123</p>
-      </div>
-     </div>
+     <% } %>
     </div>
     
-    <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+    <form action="/receipt" method="POST">
+      <button class="btn btn3">CONFIRM ORDER AND CHECKOUT</button>
+    </form>
    </div>
-
 
    </div>
   </div>

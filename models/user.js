@@ -18,6 +18,21 @@ const cart = new mongoose.Schema({
  date: { type: Date, default: Date.now },
 });
 
+const prevOrder = new mongoose.Schema({
+ itemId: { 
+  type : mongoose.Schema.Types.ObjectId,
+  ref: "Items",
+  required: true, 
+ },
+ size: {
+  type: String,
+  required: true,
+ },
+ date: { type: Date, default: Date.now },
+});
+
+const PrevOrder = mongoose.model("PrevOrder", prevOrder);
+
 const userSchema = new mongoose.Schema({
  firstName: {
   type: String,
@@ -54,6 +69,10 @@ const userSchema = new mongoose.Schema({
   type: String,
   required: true,
  },
+ giftValue: {
+  type: Number,
+  default: 99999,
+ },
  date: {
   type: Date,
   default: Date.now,
@@ -63,6 +82,7 @@ const userSchema = new mongoose.Schema({
   default: false,
  },
  userCart: [cart],
+ prevOrders: [prevOrder],
 });
 
 userSchema.methods.verifyPassword = function (password) {
@@ -100,6 +120,7 @@ function validateLogin(params) {
 }
 
 module.exports.User = User;
+module.exports.PrevOrder = PrevOrder;
 module.exports.validateUser = validateUser;
 module.exports.validateLogin = validateLogin;
 

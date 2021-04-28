@@ -7,13 +7,19 @@
   <title>Register</title>
  </head>
  <body>
+  
+  <% let  path %> 
+  <% if (locals.urlPath) { %>
+   <% path = urlPath%> 
+  <% } %>
+  
   <nav>
    <h1>LOGO</h1>
    <a href="/">Home</a>
    <a href="/account">Account</a>
   </nav>
   <br /><br />
-  <form action="/account/register/" method="POST">
+  <form action="/account/register/?path=<%= path %>"  method="POST">
    <label for="firstName">First Name</label>
    <input type="text" id="firstName" name="firstName"  required /><br /><br />
 

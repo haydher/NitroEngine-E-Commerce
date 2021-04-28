@@ -4,12 +4,19 @@
      <%- include("./partials/head", {title : "Account"}) %> 
  </head>
  <body>
+
   <% let userInfo = undefined %> 
   <% if (locals.user) { %> 
   <%  userInfo = user %>
-  <% } %>  
+  <% } %> 
 
-  <%- include("./partials/navbar", {userInfo}) %> 
+  <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+    
+  
+
+
   <h2>Account</h2>
   <p>Name</p>
   <span><%= userInfo.firstName %></span> <span><%= userInfo.lastName %></span>

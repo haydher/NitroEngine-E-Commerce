@@ -19,67 +19,32 @@ router.use(express.urlencoded({ extended: true }));
 
 const upload = multer({ storage: fileStorage });
 
-router.get("/item", [authToken, reqLoginTrue, admin], async (req, res) => {
- let user = await User.findById(req.userId).select("-password -email -phone")
- if(!user || user.length < 1) user = undefined
- res.render("uploadItem", {user});
-});
+router.put("/item/:param", [authToken, reqLoginTrue, admin ], upload.array("images", 10), async (req, res) => {
 
-router.post("/item", [authToken, reqLoginTrue, admin ], upload.array("images", 10), async (req, res) => {
- const imgPath = path.join(__dirname + "/../public/images");
- console.log("uploading item")
- const validate = validateItem({
-  price: req.body.price,
-  name: req.body.name,
-  description: req.body.description,
-  type: req.body.type,
-  brand: req.body.brand,
-  category: req.body.category,
-  gender: req.body.gender,
-  tags: req.body.tags,
-  sizes: req.body.sizes,
-  images: req.files,
- });
-
- if (validate.error) {
-  console.log("validation failed")
-  // if input is not valid then find the path the image was stored in, and delete it
-  deleteFile(imgPath, req.files);
-  return res.status(400).render("uploadItem", { message: validate.error.details[0].message, data: req.body });
+ console.log("req.body", req.body)
+ console.log("req.params", req.params)
+ let item
+ if(req.params == "update"){
+  item = await Item.updateOne({ _id: req.body.itemId }, 
+   { $set: { 
+    price: req.body.price,
+    name: req.body.name,
+    description: req.body.description,
+    type: req.body.type,
+    brand: req.body.brand,
+    category: req.body.category,
+    gender: req.body.gender,
+    tags: req.body.tags,
+    sizes: req.body.sizes,
+   }})
+  console.log("item updated", item)
  }
- let item = await Item.find({ name: req.body.name });
-
- if (item.length > 0 && item) return res.status(400).send("Item with that name already exists");
- console.log("file passed validation")
- item = new Item({
-  price: req.body.price,
-  name: req.body.name,
-  description: req.body.description,
-  type: req.body.type,
-  brand: req.body.brand,
-  category: req.body.category,
-  gender: req.body.gender,
-  tags: req.body.tags,
-  sizes: req.body.sizes,
-  images: changeFileToArray(req.files),
-  author: req.userId,
- });
- item = await item.save();
- console.log("item saved on db", item)
- 
- // upload image to aws s3
- let promises = [];
- for(let i = 0; i < req.files.length; i++){
-  let file = req.files[i];
-  promises.push(uploadFile(file));
+ if(req.params == "delete"){
+  item = await Item.findByIdAndDelete({_id: req.body.itemId})
+  console.log("Item deleted", item)
  }
- Promise.all(promises).then((data)=>{
-  deleteFile(imgPath, req.files)
-  return res.render("uploadItem", { message: "File Uploaded Successfully" });
- }).catch((err)=>{
-  return res.send(err.stack);
- }) 
- // res.render("uploadItem", { message: "File Uploaded Successfully" });
+
+ res.json(item)
 });
 
 router.get("/hero", [authToken, reqLoginTrue, admin], async (req, res) => {

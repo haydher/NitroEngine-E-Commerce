@@ -9,8 +9,19 @@ const router = express.Router();
 
 router.use(express.urlencoded({ extended: true }));
 
-router.get("/", [authToken], async (req, res) => {
- res.render("checkout")
+router.get("/", [authToken, reqLoginTrue], async (req, res) => {
+
+ let user = await User.findById(req.userId).select("-password");
+ if(user == undefined) return res.status(404).send("User not found")
+
+ let itemArr = []
+ let itemArrId =  user.userCart[0].itemId
+ let itemSize = user.userCart[0].size
+ for(let i = 0; i < itemArrId.length; i++){
+  let item = await Item.findById(itemArrId[i])
+  if(item != undefined) itemArr.push(item)
+ }
+ res.render("checkout", { user, itemArr, itemSize })
 });
 
 module.exports = router;

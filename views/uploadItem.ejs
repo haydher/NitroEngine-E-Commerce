@@ -1,114 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload New Item</title>
-</head>
+  <head>
+    <%- include("./partials/head", {title : "Upload Item"}) %> 
+  </head>
  <body>
+   
   <% if (locals.message) { %>
    <h5> <%= message %>  </h5>
   <% } %>
+
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
 
   <% let fieldValues %> 
   <% if (locals.data) { %>
    <% fieldValues = data %> 
   <% } %>
-  <form action="/upload/item" enctype="multipart/form-data" method="POST">
-   <label for="price">Item Price: </label><br>
-   <% if (fieldValues?.price != undefined) { %>
-    <input type="number" step="0.01" name="price" id="price" value=<%= fieldValues.price  %> required />
-   <% }  else {%>
-    <input type="number" step="0.01" name="price" id="price" required />
-   <% } %>
 
-   <br />
-   <br />
-   
-   <label for="name">Item Name: </label><br>
-   <% if (fieldValues?.name != undefined) { %>
-    <input type="text" name="name" id="name" value=<%= fieldValues.name  %> required />
-   <% }  else {%>
-    <input type="text" name="name" id="name" required />
-   <% } %>
-  
-   <br />
-   <br />
-   
-   <label for="description">Item Description:</label><br>
-   <% if (fieldValues?.description != undefined) { %>
-    <textarea  name="description" id="description" required><%=fieldValues.description%> </textarea>
-   <% }  else {%>
-    <textarea  name="description" id="description"  required>The Nike Trail Dri-FIT T-Shirt delivers the smooth comfort you expect from a running tee. It features an enlarged graphic, celebrating runs on rocky roads.
-    </textarea>
-   <% } %>
-  
-   <br />
-   <br />
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
-   <label for="type">Item Type:</label><br>
-   <% if (fieldValues?.type != undefined) { %>
-    <input type="text" name="type" id="type"  value=<%= fieldValues.type  %> required />
-   <% }  else {%>
-    <input type="text" name="type" id="type" required />
-   <% } %>
+  <section class="mainContainerSection catalog">
+    <%-  include("./partials/navOptions") %>
 
-   <br />
-   <br />
+    <div class="mainContainer">
+      <form action="/upload/item" enctype="multipart/form-data" method="POST">
+        <label for="price">Item Price: </label><br>
+        <% if (fieldValues?.price != undefined) { %>
+         <input type="number" step="0.01" name="price" id="price" value=<%= fieldValues.price  %> required />
+        <% }  else {%>
+         <input type="number" step="0.01" name="price" id="price" placeholder="Item Price..." required />
+        <% } %>
+        <br>
+        <button class="generatePrice btn btn2">Generate Random Price</button>
+        <br />
+        
+        <label for="name">Item Name: </label><br>
+        <% if (fieldValues?.name != undefined) { %>
+         <input type="text" name="name" id="name" value=<%= fieldValues.name  %> required />
+        <% }  else {%>
+         <input type="text" name="name" id="name" placeholder="Item Name..." required />
+        <% } %>
+        <br />
+        
+        <label for="description">Item Description:</label><br>
+        <% if (fieldValues?.description != undefined) { %>
+         <textarea  name="description" id="description" required><%=fieldValues.description%> </textarea>
+        <% }  else {%>
+         <textarea  name="description" id="description" placeholder="Description..." required></textarea>
+        <% } %>
+        <br />
+     
+        <label for="type">Item Type:</label><br>
+        <% if (fieldValues?.type != undefined) { %>
+         <input type="text" name="type" id="type" value=<%= fieldValues.type  %> required />
+        <% }  else {%>
+         <input type="text" name="type" id="type" placeholder="Type... e.g. Men Sneakers, Women Basketball Shoes" required />
+        <% } %>
+        <br />
+     
+        <label for="brand">Item Brand:</label><br>
+        <select name="brand" id="brand" required>
+          <option value="Nike">Nike</option>
+          <option value="Adidas">Adidas</option>
+          <option value="Hollister">Hollister</option>
+          <option value="H&M">H&M</option>
+          <option value="Abercrombie & Fitch">Abercrombie & Fitch</option>
+        </select>
+        <br />
 
-   <label for="brand">Item Brand:</label><br>
-   <% if (fieldValues?.brand != undefined) { %>
-    <input type="text" name="brand" id="brand"  value=<%= fieldValues.brand  %> required />
-   <% }  else {%>
-    <input type="text" name="brand" id="brand" value="Nike" required />
-   <% } %>
+        <label for="category">Item Category:</label><br>
+        <!-- <input type="text" name="category" id="category" required /> -->
+        <select name="category" id="category" required>
+         <option value="shirts">Shirts</option>
+         <option value="shoes">Shoes</option>
+         <option value="hoodie">Hoodie</option>
+         <option value="pants">Pants</option>
+         <option value="jeans">Jeans</option>
+         <option value="shorts">Shorts</option>
+         <option value="dress">Dress</option>
+         <option value="jacket">Jacket</option>
+        </select>
+        <br />
+     
+        <label for="gender">Item Gender:</label><br>
+        <select name="gender" id="gender" required>
+          <option value="men">Men</option>
+          <option value="women">Women</option>
+          <option value="kids">Kids</option>
+         </select>
+        <br />
 
-   <br />
-   <br />
-   <label for="category">Item Category:</label>
-   <!-- <input type="text" name="category" id="category" required /> -->
-   <select name="category" id="category" required>
-    <option value="shirts">Shirts</option>
-    <option value="shoes">Shoes</option>
-    <option value="hoodie">Hoodie</option>
-    <option value="jeans">Jeans</option>
-   </select>
+        <label for="tags">Item Tags:</label><br>
+        <% if (fieldValues?.tags != undefined) { %>
+         <input type="text" name="tags" id="tags" class="tagsValue" value=<%= fieldValues.tags  %> required />
+        <% }  else {%>
+         <input type="text" name="tags" id="tags" class="tagsValue" placeholder="Tags..." required />
+        <% } %>
+        <div class="tagsContainer">
+          <div class="divider">
+            <span>black</span>
+            <span>white</span>
+            <span>red</span>
+            <span>green</span>
+            <span>yellow</span>
+            <span>blue</span>
+            <span>brown</span>
+            <span>orange</span>
+            <span>pink</span>
+            <span>purple</span>
+            <span>grey</span>
+            <span>violet</span>
+          </div>
+          <div class="divider">
+            <span>winter</span>
+            <span>spring</span>
+            <span>summer</span>
+            <span>fall</span>
+          </div>
+          <div class="divider">
+            <span>men</span>
+            <span>man</span>
+            <span>gentleman</span>
+            <span>boy</span>
+            <span>woman</span>
+            <span>women</span>
+            <span>lady</span>
+            <span>girl</span>
+            <span>lady</span>
+            <span>kids</span>
+            <span>children</span>
+          </div>
+          <div class="divider">
+            <span>shoes</span>
+            <span>sneakers</span>
+            <span>jeans</span>
+            <span>pants</span>
+            <span>shorts</span>
+            <span>joggers</span>
+            <span>top</span>
+            <span>shirt</span>
+            <span>hoodie</span>
+            <span>tank top</span>
+          </div>
+          <div class="divider">
+            <span>running</span>
+            <span>jogging</span>
+            <span>sports</span>
+            <span>workout</span>
+            <span>walking</span>
+            <span>fashion</span>
+            <span>basketball</span>
+          </div>
+        </div>
+        <br />
 
-   <br />
-   <br />
+        <label for="sizes">Item Sizes:</label><br>
+        <select name="sizes" id="sizes" required>
+          <option value="XS, SM, M, L, XL">XS, SM, M, L, XL</option>
+          <option value="5, 5.5, 6, 6.5, 7">5, 5.5, 6, 6.5, 7</option>
+          <option value="7, 7.5, 8, 8.5, 9">7, 7.5, 8, 8.5, 9</option>
+        </select>
+        <br />
 
-   <label for="gender">Item Gender:</label><br>
-   <% if (fieldValues?.gender != undefined) { %>
-    <input type="text" name="gender" id="gender" value=<%= fieldValues.gender  %> required />
-   <% }  else {%>
-    <input type="text" name="gender" id="gender" required />
-   <% } %>
-   
-   <br />
-   <br />
-   <label for="tags">Item Tags:</label><br>
-   <% if (fieldValues?.tags != undefined) { %>
-    <input type="text" name="tags" id="tags" value=<%= fieldValues.tags  %> required />
-   <% }  else {%>
-    <input type="text" name="tags" id="tags" value="red blue yellow black white" required />
-   <% } %>
-   
-   <br />
-   <br />
-   <label for="sizes">Item Sizes:</label><br>
-   <% if (fieldValues?.sizes != undefined) { %>
-    <input type="text" name="sizes" id="sizes" value=<%= fieldValues.sizes  %> required />
-   <% }  else {%>
-    <input type="text" name="sizes" id="sizes" value="XS, SM, M, L, XL" required />
-   <% } %>
-   
-   <br />
-   <br />
-   <label for="images">Item Images:</label><br>
-   <input type="file" name="images" id="images" multiple="multiple" />
-   <br /><br />
-   <button>Upload</button>
-  </form>
- </body>
+        <label for="images">Item Images:</label><br>
+        <input type="file" name="images" id="images" multiple="multiple" />
+        <br /><br />
+        <button class="btn btn2">Upload</button>
+       </form>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+  <script>
+
+    const generatePrice = document.querySelector(".generatePrice")
+    const price = document.querySelector("#price")
+    generatePrice.addEventListener("click", (e)=>{
+      const randomNum =  Math.random() * (1000 - 100) + 100;
+      price.value = randomNum.toFixed(2)
+      e.preventDefault()
+    })
+
+    const tagsOptions = document.querySelectorAll(".tagsContainer span")
+    tagsOptions.forEach(btn => {
+      let tagsInput = document.querySelector(".tagsValue")
+      if(!btn.classList.contains("tagsActive") && tagsInput.value.includes(btn.innerHTML))
+        btn.classList.add("tagsActive")
+
+      btn.addEventListener("click", (e)=>{
+        tagsInput = document.querySelector(".tagsValue")
+        if(!btn.classList.contains("tagsActive") && !tagsInput.value.includes(btn.innerHTML)) {
+          let prevValue = tagsInput.value
+          tagsInput.value = `${prevValue} ${btn.innerHTML}`
+          btn.classList.add("tagsActive")
+        }
+      })
+    });
+  </script>
+</body>
 </html>

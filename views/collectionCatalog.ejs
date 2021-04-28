@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include("./partials/head", {title : "Catalog"}) %> 
+</head>
+<body>
+
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+
+  <% let catalog  %> 
+  <% if(locals.collection) {%> 
+  <%  catalog = collection %> 
+  <% //console.log("author", catalog[0].author.username) %> 
+  <%  }%> 
+ 
+  <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+
+  <section class="mainContainerSection catalog">
+  <%-  include("./partials/navOptions") %> 
+
+    <div class="mainContainer">
+     <!--  catalog.length -->
+     <% for( let i = 0; i < catalog.length; i++ ) { %>
+      <div class="catalogItem">
+
+        <h5>Collection ID</h5>
+        <p><%-catalog[i]._id%></p>
+        
+        <h5>Title</h5>
+        <input type="text" name="title" value="<%-catalog[i].title%>">
+
+        <h5>Category</h5> 
+        <input type="text" name="category" value="<%-catalog[i].category%>">
+
+        <h5>Author</h5>
+        <p><span><%-catalog[i].author?.firstName%></span> <span><%-catalog[i].author?.lastName%></span> </p>
+
+        <h5>Uploaded Date</h5>
+        <p><%-catalog[i].date%></p>
+
+        <h5>Collection Image</h5>
+        <img src="/images/<%=catalog[i].collectionImg%>"/>
+       
+        <div class="btnContainer">
+          <button class="btn btn2">Update Collection</button>
+          <button class="btn btn2 btnWarning">Delete Collection</button>
+        </div>
+
+      </div>
+     <% } %>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>

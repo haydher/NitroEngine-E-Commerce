@@ -1,11 +1,14 @@
 const {downloadImgFromS3} = require("./routes/s3")
 const home = require("./routes/home");
 const upload = require("./routes/upload");
+const update = require("./routes/update");
 const auth = require("./routes/auth");
 const item = require("./routes/item");
 const selectedItem = require("./routes/selectedItem");
 const cart = require("./routes/cart");
 const checkout = require("./routes/checkout");
+const receipt = require("./routes/receipt");
+const prevOrders = require("./routes/prevOrders");
 const ejs = require("ejs");
 const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
@@ -30,11 +33,14 @@ app.set("view engine", "ejs");
 
 app.use("/", home);
 app.use("/upload", upload);
+app.use("/update", update);
 app.use("/account", auth);
 app.use("/item", item);
 app.use("/selectedItem", selectedItem);
 app.use("/cart", cart);
 app.use("/checkout", checkout);
+app.use("/receipt", receipt);
+app.use("/prevOrders", prevOrders);
 
 app.get("/images/:key", (req, res)=>{
  const key = req.params.key

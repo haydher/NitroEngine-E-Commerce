@@ -12,6 +12,12 @@
   <% if (locals.messages) { %>
    <% message = messages%> 
   <% } %>
+  
+  <% let  path%> 
+  <% if (locals.urlPath) { %>
+   <% path = urlPath%> 
+  <% } %>
+  
 
   <nav>
    <h1>LOGO</h1>
@@ -20,8 +26,7 @@
   </nav>
 
   <p><% if(message?.error) { %> <%= message?.error %> <% } %></p>
-
-  <form action="/account/login/" method="POST">
+  <form action="/account/login/?path=<%= path %> " method="POST">
    <label for="username">username</label>
    <input type="text" id="username" name="username" required /><br />
    <label for="password">password</label>

@@ -60,6 +60,10 @@ a:hover {
  opacity: 1;
  width: 48.8%;
 }
+.checkOutInfo input:disabled {
+ background-color: var(--accent-color-secondary);
+ cursor: not-allowed;
+}
 .inputLong {
  width: 100% !important;
 }
@@ -73,7 +77,10 @@ a:hover {
  height: 20px;
  margin: 10px 5px 20px 0;
 }
-
+.userInfo .errMessage {
+ line-height: 1.5em;
+ margin-bottom: 20px;
+}
 .userInfo .orderMainContainer {
  margin-top: 10px;
  width: 100%;
@@ -112,4 +119,8 @@ a:hover {
 .secondContainer .itemPrice {
  font-size: 17px;
  padding: 5px 0;
+}
+.requiredTrue {
+ background-color: rgb(255, 171, 171);
+ border: 1px solid red !important;
 }

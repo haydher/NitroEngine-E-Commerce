@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload New Collection</title>
-</head>
+  <head>
+    <%- include("./partials/head", {title : "Upload Collection"}) %> 
+  </head>
  <body>
-  <% if (locals.message) { %>
-   <h5> <%= message %>  </h5>
-  <% } %>
 
-  <% let fieldValues %> 
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+  
+  <% let fieldValues = undefined %> 
   <% if (locals.data) { %>
    <% fieldValues = data %> 
   <% } %>
 
-  <form action="/upload/collection" enctype="multipart/form-data" method="POST">
-   
-   <label for="title">Collection Title: </label><br>
-   <% if (fieldValues?.title != undefined) { %>
-    <input type="text" name="title" id="title" size="77" value=<%= fieldValues.title  %> required />
-   <% }  else {%>
-    <input type="text" name="title" id="title" size="77" required />
-   <% } %>
+  <% if (locals.message) { %>
+   <h5> <%= message %>  </h5>
+  <% } %>
 
-   <br /><br />
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+  <section class="mainContainerSection catalog">
+    <%-  include("./partials/navOptions") %>
+    <div class="mainContainer">
 
-   <label for="category">Hero Category:</label>
-   <select name="category" id="category" required>
-    <option value="red">Red</option>
-    <option value="orange">Orange</option>
-    <option value="yellow">Yellow</option>
-    <option value="green">Green</option>
-    <option value="blue">Blue</option>
-    <option value="purple">Purple</option>
-    <option value="white">White</option>
-    <option value="black">Black</option>
+    <form action="/upload/collection" enctype="multipart/form-data" method="POST">
     
-    <option value="shirts">Shirts</option>
-    <option value="shoes">Shoes</option>
-    <option value="hoodie">Hoodie</option>
-    <option value="jeans">Jeans</option>
-    <option value="shorts">Shorts</option>
+    <label for="title">Collection Title: </label><br>
+    <% if (fieldValues?.title != undefined) { %>
+      <input type="text" name="title" id="title" size="77" value=<%= fieldValues.title  %> required />
+    <% }  else {%>
+      <input type="text" name="title" id="title" size="77" required />
+    <% } %>
+    <br />
 
-    <option value="summer">Summer</option>
-    <option value="winter">Winter</option>
-    <option value="spring">Spring</option>
-    <option value="sports">Sports</option>
-   </select>
+    <label for="category">Hero Category:</label>
+    <select name="category" id="category" required>
+      <option value="red">Red</option>
+      <option value="orange">Orange</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+      <option value="blue">Blue</option>
+      <option value="purple">Purple</option>
+      <option value="white">White</option>
+      <option value="black">Black</option>
+      
+      <option value="shirts">Shirts</option>
+      <option value="shoes">Shoes</option>
+      <option value="hoodie">Hoodie</option>
+      <option value="jeans">Jeans</option>
+      <option value="shorts">Shorts</option>
 
-   <br /><br />
+      <option value="summer">Summer</option>
+      <option value="spring">Spring</option>
+      <option value="fall">Fall</option>
+      <option value="winter">Winter</option>
+      <option value="sports">Sports</option>
+    </select>
+    <br />
 
-   <label for="collectionImg">Collection Cover Image:</label><br>
-   <input type="file" name="collectionImg" id="collectionImg"/>
-   
-   <br /><br />
-   <button>Upload</button>
-  </form>
+    <label for="collectionImg">Collection Cover Image:</label><br>
+    <input type="file" name="collectionImg" class="fileUpload" id="collectionImg"/>
+    <br />
+
+    <button class="btn btn2">Upload</button>
+    </form>
+
+  </div>
+  </section>
+  <!-- footer -->
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
  </body>
 </html>

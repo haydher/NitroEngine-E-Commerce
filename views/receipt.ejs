@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <%- include("./partials/head", {title : "Checkout"}) %> 
+</head>
+<body>
+ 
+ <% let item = [], size, userInfo %> 
+ 
+ <% if (locals.user) { %> 
+ <%  userInfo = user %>
+ <% } %> 
+
+ <% if (locals.itemArr) { %> 
+ <%  item = itemArr %>
+ <% } %> 
+
+ <% if (locals.itemSize) { %> 
+ <%  size = itemSize %>
+ <% } %> 
+
+ <% let totalPrice = 0 %> 
+ <% function getTotalCost(){ %> 
+  <%  item.forEach(e => { %>
+   <% totalPrice += e.price %>
+  <% });  %> 
+  <% return totalPrice.toFixed(2) %> 
+ <% } %> 
+
+ <% let date %> 
+ <% function getDate(value){ %> 
+  <% let date = new Date() %> 
+  <% let month = date.getMonth() %> 
+  <% let day = date.getDay() %> 
+  <% let year = date.getYear() - 100%> 
+  <% if (month == 1) month = "Jan" %>
+  <% if (month == 2) month = "Feb" %>
+  <% if (month == 3) month = "Mar" %>
+  <% if (month == 4) month = "Apr" %>
+  <% if (month == 5) month = "May" %>
+  <% if (month == 6) month = "Jun" %>
+  <% if (month == 7) month = "Jul" %>
+  <% if (month == 8) month = "Aug" %>
+  <% if (month == 9) month = "Sept" %>
+  <% if (month == 10) month = "Oct" %>
+  <% if (month == 11) month = "Nov" %>
+  <% if (month == 12) month = "Dec" %>
+  <% if(value == "curr") return `${month}-${day}-${year}` %>
+  <% if(value == "ship") return `${month}-${day+3}-${year}` %> 
+ <% } %> 
+ 
+ <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+ 
+ <div class="confirmationContainer">
+  <h1 class="cartHeader">Thank you for you Order</h1>
+ </div>
+ <section class="checkOutInfo">
+  <div class="userInfo receiptContainer">
+   <div class="receiptInfo">
+    
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Order Confirmation</p> 
+     <p class="cost">XXX-XXX-123</p>
+    </div>
+    
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Order Date</p> 
+     <p class="cost"><%= getDate("curr") %></p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Order Total</p> 
+     <p class="cost">$<%= getTotalCost() %></p>
+    </div>
+
+    <h1 class="OrderSummaryHeader">Shipping Information</h1>
+    <p class="shippingInfo"><%= userInfo.firstName %> <%= userInfo.lastName %></p>
+    <p class="shippingInfo"><%= userInfo.phone %></p>
+    <p class="shippingInfo"><%= userInfo.email %></p>
+    <br>
+    <p class="shippingInfo">5 Main St</p>
+    <p class="shippingInfo">Boston, Ma</p>
+    <p class="shippingInfo">02180</p>
+    
+    <h1 class="OrderSummaryHeader">Shipping Information</h1>
+    <p class="shippingInfo">Remain Gift Card Value: <%= userInfo.giftValue.toFixed(2) %></p>
+
+    <h1 class="OrderSummaryHeader">Estimated Date of Arrival</h1>
+    <p class="shippingInfo arrivalDate"><%= getDate("ship") %></p>
+
+    <button class="btn btn2 print">PRINT</button>
+
+   </div>
+  </div>
+  
+  <div class="orderMainContainer secondContainer">
+   <div class="orderSummaryContainer">
+
+    <h1 class="OrderSummaryHeader">Order Summary</h1>
+    <div class="orderInfoContainer">
+     <p class="orderInfo"><%= itemArr.length %>  Products</p> 
+     <p class="cost">$<%= totalPrice.toFixed(2) %></p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo">Shipping Cost</p> 
+     <p class="cost">$0</p>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderinfo">Total Cost</p> 
+     <p class="cost">$<%= totalPrice.toFixed(2) %></p>
+    </div>
+
+    <div class="cartItems">
+     <h3 class="cartHeader">Items In Cart</h3>
+     <% for( let i = 0; i < item.length; i++ ) { %>
+      <div class="cardItem">
+       <div class="cartItemImg">
+        <img src="/images/<%=item[i].images[0]%>">
+       </div>
+       <div class="cartItemInfo">
+        <h2 class="cartItemTitle"><%=item[i].name%></h2>
+        <p class="cartItemType"><%=item[i].type%></p>
+        <p class="cartItemSize">Size: <%=size[i]%></p>
+        <p class="itemPrice">$<%=item[i].price%></p>
+       </div>
+      </div>
+     <% } %>
+    </div>
+
+    <div class="orderInfoContainer">
+     <p class="orderInfo cost">Estimated Date Of Arrival</p> 
+     <p class="cost"><%= getDate("ship") %></p>
+    </div>
+    <a href="/prevOrders">
+     <button class="btn btn3">VIEW ORDERS</button>
+    </a>
+   </div>
+
+
+   </div>
+  </div>
+ </section>
+
+ <!-- footer -->
+ <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+  <script>
+   const printBtn = document.querySelector(".print")
+   const receiptInfo = document.querySelector(".receiptInfo").innerHTML
+   printBtn.addEventListener("click", ()=>{
+    printDiv()
+   })
+   function printDiv() {
+    const receiptInfo = document.querySelector(".receiptInfo").innerHTML
+    const a = window.open("", '', 'height=1000, width=1000');
+    a.document.write('<html><body>');
+    a.document.write(`${receiptInfo}`);
+    a.document.write('</body></html>');
+    a.document.close();
+    a.print();
+   }
+  </script>
+</body>
+</html>

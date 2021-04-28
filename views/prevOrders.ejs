@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <%- include("./partials/head", {title : "Checkout"}) %> 
+</head>
+<body>
+ 
+ <% let item = [], size, userInfo, dateOrdered, catalog %> 
+ 
+ <% if (locals.user) { %> 
+ <%  userInfo = user %>
+ <% } %> 
+
+ <% if (locals.catalogArr) { %> 
+ <%  catalog = catalogArr %>
+ <% } %> 
+   
+ <% if (locals.itemArr) { %> 
+ <%  item = itemArr %>
+ <% } %> 
+
+ <% if (locals.itemSize) { %> 
+ <%  size = itemSize %>
+ <% } %> 
+
+ <% if (locals.orderDate) { %> 
+ <%  dateOrdered = orderDate %>
+ <% } %> 
+
+ <% function getDate(userDate){ %> 
+  <% let date = new Date(userDate) %> 
+  <% let month = date.getMonth() %> 
+  <% let day = date.getDay() %> 
+  <% let year = date.getYear() - 100%> 
+  <% if (month == 1) month = "Jan" %>
+  <% if (month == 2) month = "Feb" %>
+  <% if (month == 3) month = "Mar" %>
+  <% if (month == 4) month = "Apr" %>
+  <% if (month == 5) month = "May" %>
+  <% if (month == 6) month = "Jun" %>
+  <% if (month == 7) month = "Jul" %>
+  <% if (month == 8) month = "Aug" %>
+  <% if (month == 9) month = "Sept" %>
+  <% if (month == 10) month = "Oct" %>
+  <% if (month == 11) month = "Nov" %>
+  <% if (month == 12) month = "Dec" %>
+  <% return `${month}-${day}-${year}` %>
+ <% } %> 
+ 
+ <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+ 
+  <section class="prevOrderContainer">
+   <div class="prevOrder">
+    <h1 class="cartHeader">Previous Orders</h1>
+    <% for( let i = 0; i < item.length; i++ ) { %>
+    
+     <div class="prevOrderCard">
+      <div class="cardItem">
+       <div class="cartItemImg">
+        <img src="/images/<%=item[i].images[0] %>">
+       </div>
+       <div class="itemInfoContainer">
+        <div class="cartItemInfo">
+         <h2 class="cartItemTitle"><%=item[i].name %></h2>
+         <p class="cartItemType"><%=item[i].type %></p>
+         <p class="cartItemSize">Shipped To: <%=user.firstName %> <%=user.lastName %></p>
+         <p class="itemPrice">Ordered On: <%= getDate(dateOrdered[i]) %> </p>
+        </div>
+        <div class="itemBtns">
+         <a href="/selectedItem/<%=item[i]._id %>">
+          <button class="btn bt2">View Item</button>
+         </a>
+         <button class="btn bt2">Return Item</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    <% } %>
+
+   </div>
+  </section>
+
+
+  <section class="newArrivalsContainer">
+   <div class="newArrivals">
+    <h1 class="heading">You May Like</h1>
+    <div class="arrivalContainer">
+
+     <% function getRandArr(arr) { %>
+      <% return Math.floor(Math.random() * arr.length); %>
+     <% } %> 
+     <!-- get new index to make sure the items are new  -->
+     <% let set = new Set(); %> 
+     <% for( let i = 0; i < 7; i++ ) { %>
+     <% let randIndex = getRandArr(catalog) %> 
+     <% set.add(randIndex) %> 
+     <% let breakPoint = 0;%> 
+     <% while (set.has(randIndex) && set.size - 1 < i) { %> 
+       <% if (breakPoint > 5) break %> 
+       <% randIndex = getRandArr(catalog)  %> 
+       <% set.add(randIndex) %> 
+       <% breakPoint++  %> 
+     <% }%> 
+
+    <a href="/selectedItem/<%=catalog[randIndex]._id%>">
+    <div class="card">
+      <div class="cardImgContainer">
+        <img src="/images/<%=catalog[randIndex].images[0]%>"/>
+        <div class="cardInfo">
+        <p class="itemHeading"><%= catalog[randIndex].name%></p>
+        </div>
+      </div>
+    </div>
+    </a>
+  <% } %>
+
+
+
+    </div>
+   </div>
+  </section>
+
+
+
+ <!-- footer -->
+ <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>

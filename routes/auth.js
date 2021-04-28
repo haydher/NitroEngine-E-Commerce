@@ -19,7 +19,11 @@ router.get("/", [authToken, reqLoginTrue], async (req, res) => {
 })
 // show the signup page
 router.get("/register", [authToken, reqLoginFalse] , async (req, res) => {
- res.render("register");
+  fullURL = req.header('Referer') || '/';
+  let urlArr = fullURL.split("/")
+  let urlPath = urlArr[urlArr.length - 1]
+  res.render("register", {urlPath});
+//  res.render("register");
 }); 
 // post data to sign up page
 router.post("/register", [authToken, reqLoginFalse], async (req, res) => {
@@ -40,13 +44,18 @@ router.post("/register", [authToken, reqLoginFalse], async (req, res) => {
  user = await user.save();
  
  let token = user.generateAuthToken()
- 
- res.cookie('token', token).redirect("/");
+
+//  res.cookie('token', token).redirect("/");
+ res.cookie('token', token).redirect(`/${req.query.path}`);
 });
 
 // get to the login page
 router.get("/login",  [authToken, reqLoginFalse], async (req, res) => {
- res.render("login");
+ //send user back to where they logged in from
+ fullURL = req.header('Referer') || '/';
+ let urlArr = fullURL.split("/")
+ let urlPath = urlArr[urlArr.length - 1]
+ res.render("login", {urlPath});
 });
 
 router.post("/login", async (req, res) => {
@@ -60,8 +69,14 @@ router.post("/login", async (req, res) => {
   if(!password) return res.send("Invalid Password")
 
   let token = user[0].generateAuthToken()
- 
-  res.cookie('token', token).redirect("/");
+  console.log("req.query.path", req.query)
+  // res.cookie('token', token).redirect("/");
+  res.cookie('token', token).redirect(`/${req.query.path}`);
+});
+
+// logout the session
+router.post("/logout", [authToken, reqLoginTrue], (req, res) => {
+ res.cookie("token", "", {expire: Date.now()}).redirect("/");
 });
 
 router.get("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
@@ -100,11 +115,6 @@ router.post("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
 
  // res.render("changePass");
  res.send("Password updated");
-});
-
-// logout the session
-router.post("/logout", [authToken, reqLoginTrue], (req, res) => {
- res.cookie("token", "", {expire: Date.now()}).redirect("/");
 });
 
 module.exports = router;

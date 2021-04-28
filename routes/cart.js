@@ -64,7 +64,7 @@ router.get("/", [authToken], async (req, res) => {
   };
   // let item = await Item.findById
   if (user != undefined && userCartItem.length > 0)
-   return res.cookie("cart", "").render("cart", { 
+   return res.clearCookie("cart").render("cart", { 
       user,
       itemArr : userCartItem,
       itemSize : user.userCart[0].size

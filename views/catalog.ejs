@@ -1,79 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Nitro Engine</title>
- <style>
-  *{
-   box-sizing: border-box;
-   padding: 0;
-   margin: 0;
-  }
-  h5 {
-   font-size: 18px;
-   padding: 5px;
-  }
-  span {
-   font-size: 17px;
-   padding: 0 0 10px 10px;
-  }
-  img {
-   height: 100px;
-   width: 100px;
-   margin-left: 5px;
-  }
- </style>
+  <%- include("./partials/head", {title : "Catalog"}) %> 
 </head>
 <body>
+
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+
+  <% let catalog  %> 
+  <% if(locals.item) {%> 
+  <%  catalog = item%> 
+  <% //console.log("author", catalog[0].author.username) %> 
+  <%  }%> 
  
- <% let catalog  %> 
- <% if(locals.item) {%> 
- <%  catalog = item%> 
- <% //console.log("author", catalog[0].author.username) %> 
- <%  }%> 
+  <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
- <% catalog.forEach(item => { %>
-  <h5>Name</h5>
-  <span><%-item.name%></span>
+  <section class="mainContainerSection catalog">
+    <%-  include("./partials/navOptions") %> 
 
- <h5>Description</h5>
-  <span><%-item.description%></span>
+    <div class="mainContainer">
+        
+     <!--  catalog.length -->
+     <% for( let i = 0; i < 3; i++ ) { %>
+      <div class="catalogItem" id="<%-catalog[i]._id %>">
 
-  <h5>Type</h5>
-  <span><%-item.type%></span>
+        <h5>Item ID</h5>
+        <p><%-catalog[i]._id%></p>
+        
+        <h5>Name</h5>
+        <input type="text" name="name" value="<%-catalog[i].name%>" class="<%-catalog[i]._id%>">
 
- <h5>Brand</h5>
-  <span><%-item.brand%></span>
+        <h5>Price</h5>
+        <input type="text" name="price" value="<%-catalog[i].price%>" class="<%-catalog[i]._id%>">
 
- <h5>Category</h5>
-  <span><%-item.category%></span>
+        <h5>Description</h5>
+        <textarea name="description" class="<%-catalog[i]._id%>"><%-catalog[i].description%></textarea>
 
- <h5>Gender</h5>
-  <span><%-item.gender%></span>
+        <h5>Type</h5>
+        <input type="text" name="type" value="<%-catalog[i].type%>" class="<%-catalog[i]._id%>">
 
- <h5>Tags</h5>
-  <span><%-item.tags%></span>
+        <h5>Brand</h5>
+        <input type="text" name="brand" value="<%-catalog[i].brand%>" class="<%-catalog[i]._id%>">
 
- <h5>Author</h5>
-  <span><%-item.author?.firstName%> <%-item.author?.lastName%></p>
+        <h5>Category</h5> 
+        <input type="text" name="category" value="<%-catalog[i].category%>" class="<%-catalog[i]._id%>">
 
- <h5>Uploaded Date</h5>
- <span><%-item.date%></span>
+        <h5>Gender</h5>
+        <input type="text" name="gender" value="<%-catalog[i].gender%>" class="<%-catalog[i]._id%>">
 
- <h5>Images</h5>
-  <% item.images.forEach(imgs => { %>
-   <img src="/images/<%=imgs%>"/>
-  <% }) %>
-  <br><br>
-  <a href="/upload/hero?id=<%-item._id%>" ><button>Upload Hero</button></a> 
-  <br><br><br>
-  <span>---------------------------------------------------</span>
-  <br><br><br>
-  <% }) %>
- 
+        <h5>Tags</h5>
+        <input type="text" name="tags" value="<%-catalog[i].tags%>" class="<%-catalog[i]._id%>">
 
+        <h5>Sizes</h5>
+        <input type="text" name="sizes" value="<%-catalog[i].sizes%>" class="<%-catalog[i]._id%>">
 
+        <h5>Author</h5>
+        <p><span><%-catalog[i].author?.firstName%></span> <span><%-catalog[i].author?.lastName%></span> </p>
+
+        <h5>Uploaded Date</h5>
+        <p><%-catalog[i].date%></p>
+
+        <h5>Images</h5>
+        <div class="catalogImgContainer">
+          <% catalog[i].images.forEach(imgs => { %>
+            <div class="itemImgContainer">
+              <img src="/images/<%=imgs%>"/ class="images">
+              <div class="overLay">
+                <img src="/imgs/icons/cross.svg" alt="">
+              </div>
+            </div>
+          <% }) %>
+        </div>
+        
+        <div class="btnContainer">
+          <button class="btn btn2 update" id="<%-catalog[i]._id%>">Update Item</button>
+          <a href="/upload/hero?id=<%-catalog[i]._id%>" >
+            <button class="btn btn2">Upload Hero</button>
+          </a> 
+          <button class="btn btn2 btnWarning" id="<%-catalog[i]._id%>">Delete Item</button>
+        </div>
+        <div class="message">
+          <p></p>
+        </div>
+      </div>
+     <% } %>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
 </body>
 </html>
