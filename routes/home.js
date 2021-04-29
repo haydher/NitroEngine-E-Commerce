@@ -29,7 +29,7 @@ router.get("/",authToken, async (req, res) => {
  
  else if (item == undefined || item.length < 1 || 
   heroResult == undefined || heroResult.length < 1|| 
-  collectionResult == undefined || collectionResult.length < 1) return res.status(404).send("Page not found")
+  collectionResult == undefined || collectionResult.length < 1) return res.status(404).render("404")
 
  res.render("index", {item, heroResult,collectionResult})
 });

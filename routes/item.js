@@ -26,7 +26,7 @@ router.get("/", [authToken], async (req, res) => {
  if(req.query.gender) {
   let searchResult = await Item.find({gender: { $regex : new RegExp(req.query.gender, "i")} , category: req.query.category})
   if(searchResult == undefined || searchResult.length < 1)
-   return res.status(404).send("no item with that search found")
+   return res.status(404).render("404")
   if (user != undefined && searchResult != undefined && searchResult.length > 0)
    return res.render("itemPage", { user, item,  searchResult, searchField : genderSearch });
   else return res.render("itemPage", { item,  searchResult, searchField : genderSearch });
@@ -37,12 +37,12 @@ router.get("/", [authToken], async (req, res) => {
   let searchResult = await Item.find({$text: {$search : `${searchField}`}}, {score: {$meta: "textScore"}})
     .sort({score: {$meta: "textScore"}})
   if(searchResult == undefined || searchResult.length < 1)
-   return res.status(404).send("no item with that search found")
+   return res.status(404).render("404")
   if (user != undefined && searchResult != undefined && searchResult.length > 0)
    return res.render("itemPage", { user, item, searchResult, searchField : getUpperCase(searchField) });
   else return res.render("itemPage", { item,  searchResult, searchField : genderSearch });
   }else if(searchField == undefined && req.query.gender == undefined)
-  return res.status(404).send("no item with that search found")
+  return res.status(404).render("404")
 });
 
 router.get("/catalog", [authToken, reqLoginTrue, admin], async (req, res) => {
@@ -54,7 +54,7 @@ router.get("/catalog", [authToken, reqLoginTrue, admin], async (req, res) => {
  if (!item) return res.status(400).send('Invalid Search.');
 
  if (user != undefined && item != undefined && item.length > 0) return res.render("catalog", { user, item });
- else if ( item == undefined || item.length < 1) return res.status(404).send("Page not found")
+ else if ( item == undefined || item.length < 1) return res.status(404).render("404")
  res.render("catalog", {item})
 });
 
@@ -66,7 +66,7 @@ router.get("/catalog/hero", [authToken, reqLoginTrue, admin], async (req, res) =
   .populate("author", "-password -phone")
   if (!hero) return res.status(400).send('No Hero Exists.');
   if (user != undefined && hero != undefined && hero.length > 0) return res.render("heroCatalog", { user, hero });
-  else if ( hero == undefined || hero.length < 1) return res.status(404).send("Page not found")
+  else if ( hero == undefined || hero.length < 1) return res.status(404).render("404")
   res.render("heroCatalog", {hero})
  });
 
@@ -78,7 +78,7 @@ router.get("/catalog/collections", [authToken, reqLoginTrue, admin], async (req,
   .populate("author", "-password -phone")
   if (!collection) return res.status(400).send('No Hero Exists.');
   if (user != undefined && collection != undefined && collection.length > 0) return res.render("collectionCatalog", { user, collection });
-  else if ( collection == undefined || collection.length < 1) return res.status(404).send("Page not found")
+  else if ( collection == undefined || collection.length < 1) return res.status(404).render("404")
   res.render("collectionCatalog", {collection})
 });
 
@@ -90,17 +90,18 @@ router.post("/searchResult", [authToken], async (req, res) => {
 
   let searchValue = req.body.searchValue
   console.log(searchValue)
-  if(req.body.searchValue) {
-    let searchResult = await Item.find({$text: {$search:{ $regex: `${searchValue}`, $options: "i" } }}, {score: {$meta: "textScore"}})
+  if(req.body.searchValue) { //{$text: {$search : `${searchField}`}}
+    let searchResult = await Item.find({$text: {$search: `${searchValue}`, $caseSensitive: false }}, {score: {$meta: "textScore"}})
       .sort({score: {$meta: "textScore"}}).limit(10)
     if(searchResult == undefined || searchResult.length < 1)
      return res.json("no results found")
+    console.log(searchResult)
     if (user != undefined && searchResult != undefined && searchResult.length > 0)
      return res.json(searchResult);
    }
  
   if (user != undefined && item != undefined && item.length > 0) return res.render("catalog", { user, item });
-  else if ( item == undefined || item.length < 1) return res.status(404).send("Page not found")
+  else if ( item == undefined || item.length < 1) return res.status(404).render("404")
   // res.render("catalog", {item})
   res.json()
 });

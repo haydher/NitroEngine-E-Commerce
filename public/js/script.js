@@ -2,12 +2,18 @@ const searchBtn = document.querySelector("#searchBtn");
 
 searchBtn.addEventListener("click", () => {
  const searchField = document.querySelector("#searchBar").value;
- console.log("Value", searchField);
  location.href = `/item?search=${searchField}`;
 });
 
-
 const searchField = document.querySelector("#searchBar")
+searchField.addEventListener("keyup", (e)=> {
+ if (e.keyCode === 13) {
+  location.href = `/item?search=${searchField.value}`;
+  e.preventDefault();
+ }
+});
+
+// const searchField = document.querySelector("#searchBar")
 // searchField.addEventListener("keyup", () => {
 //  const searchValue = searchField.value
 //  console.log("Value", searchValue);

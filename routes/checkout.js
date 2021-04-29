@@ -12,7 +12,7 @@ router.use(express.urlencoded({ extended: true }));
 router.get("/", [authToken, reqLoginTrue], async (req, res) => {
 
  let user = await User.findById(req.userId).select("-password");
- if(user == undefined) return res.status(404).send("User not found")
+ if(user == undefined) return res.status(404).render("404")
 
  let itemArr = []
  let itemArrId =  user.userCart[0].itemId

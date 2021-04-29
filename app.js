@@ -49,7 +49,7 @@ app.get("/images/:key", (req, res)=>{
 })
 
 app.use((req, res, next) => {
- res.status(404).send("404 Could not find Page")
+ res.status(404).render("404")
 })
 const port = process.env.PORT ||  9999;
 app.listen(port, () => console.log(`connected to the port ${port}`));

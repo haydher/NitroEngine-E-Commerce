@@ -82,9 +82,11 @@
         <% }%> 
 
         <div class="card">
-          <div class="cardImgContainer">
-            <img src="/images/<%=newArrivals[randArrIndex].images[0]%>" />
-          </div>
+          <a href="/selectedItem/<%=newArrivals[randArrIndex]._id%>">
+            <div class="cardImgContainer">
+              <img src="/images/<%=newArrivals[randArrIndex].images[0]%>" />
+            </div>
+          </a>
           <div class="cardInfo">
             <p><%=newArrivals[randArrIndex].name%></p>
             <a href="/selectedItem/<%=newArrivals[randArrIndex]._id%>">
@@ -94,53 +96,6 @@
         </div>
 
       <% } %>
-     <!-- 
-     <div class="card">
-      <div class="cardImgContainer">
-       <img src="./imgs/newArrivals/man1.webp" alt="" />
-      </div>
-      <div class="cardInfo">
-       <p>Slim Jeans for Men</p>
-       <button class="btn btn2">SHOP</button>
-      </div>
-     </div>
-     <div class="card">
-      <div class="cardImgContainer">
-       <img src="./imgs/newArrivals/man2.webp" alt="" />
-      </div>
-      <div class="cardInfo">
-       <p>Shirts for Men</p>
-       <button class="btn btn2">SHOP</button>
-      </div>
-     </div>
-     <div class="card">
-      <div class="cardImgContainer">
-       <img src="./imgs/newArrivals/woman1.webp" alt="" />
-      </div>
-      <div class="cardInfo">
-       <p>Slim Jeans for Women</p>
-       <button class="btn btn2">SHOP</button>
-      </div>
-     </div>
-     <div class="card">
-      <div class="cardImgContainer">
-       <img src="./imgs/newArrivals/woman2.webp" alt="" />
-      </div>
-      <div class="cardInfo">
-       <p>Fit Jeans for Women</p>
-       <button class="btn btn2">SHOP</button>
-      </div>
-     </div>
-     <div class="card">
-      <div class="cardImgContainer">
-       <img src="./imgs/newArrivals/man3.webp" alt="" />
-      </div>
-      <div class="cardInfo">
-       <p>Hoodie for Men</p>
-       <button class="btn btn2">SHOP</button>
-      </div>
-     </div>
-      -->
     </div>
    </div>
   </section>

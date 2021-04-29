@@ -13,7 +13,6 @@
   <% let catalog  %> 
   <% if(locals.item) {%> 
   <%  catalog = item%> 
-  <% //console.log("author", catalog[0].author.username) %> 
   <%  }%> 
  
   <!-- NavBar -->
@@ -26,7 +25,7 @@
     <div class="mainContainer">
         
      <!--  catalog.length -->
-     <% for( let i = 0; i < 3; i++ ) { %>
+     <% for( let i = 0; i < catalog.length; i++ ) { %>
       <div class="catalogItem" id="<%-catalog[i]._id %>">
 
         <h5>Item ID</h5>
@@ -67,20 +66,21 @@
 
         <h5>Images</h5>
         <div class="catalogImgContainer">
-          <% catalog[i].images.forEach(imgs => { %>
-            <div class="itemImgContainer">
-              <img src="/images/<%=imgs%>"/ class="images">
-              <div class="overLay">
-                <img src="/imgs/icons/cross.svg" id="<%=imgs%>"">
-              </div>
+          <div class="itemImgContainer">
+            <img src="/images/<%= catalog[i].images[0] %>" class="images">
+            <div class="overLay">
+              <img src="/imgs/icons/cross.svg" id="<%= catalog[i].images[0] %>/<%=catalog[i]._id%>">
             </div>
-          <% }) %>
+          </div>
         </div>
         
         <div class="btnContainer">
           <button class="btn btn2 update" id="<%-catalog[i]._id%>">Update Item</button>
           <a href="/upload/hero?id=<%-catalog[i]._id%>" >
             <button class="btn btn2">Upload Hero</button>
+          </a> 
+          <a href="/update/<%-catalog[i]._id%>" target="_blank">
+            <button class="btn btn2">Edit Images</button>
           </a> 
           <button class="btn btn2 btnWarning" id="<%-catalog[i]._id%>">Delete Item</button>
         </div>
@@ -91,7 +91,6 @@
      <% } %>
     </div>
   </section>
-
   <!-- footer -->
   <footer>
     <%- include("./partials/footer") %> 
@@ -99,3 +98,18 @@
   <%- include("./partials/scripts") %> 
 </body>
 </html>
+
+
+<% //catalog[i].images.forEach(imgs => { %>
+  <!-- <div class="itemImgContainer">
+    <img src="/images/<%= //imgs%>" class="images">
+    <div class="overLay">
+      <img src="/imgs/icons/cross.svg" id="<%= //imgs%>/<%= //catalog[i]._id%>">
+    </div>
+  </div> -->
+<% //}) %>
+
+<!--         
+  <div class="uploadImgToCatalog itemImgContainer" id="img-<%- //catalog[i]._id%>">
+    <input type="file" class="fileUpload custom-file-input"/>
+  </div> -->

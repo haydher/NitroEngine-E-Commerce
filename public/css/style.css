@@ -569,3 +569,23 @@ footer {
  font-size: 15px;
  padding: 10px;
 }
+.notFound404section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--container-width);
+  margin: auto;
+  height: 50vh;
+  font-family: var(--font-family);
+}
+.notFound404Container {
+  text-align: center;
+}
+.notFound404Container h1 {
+  padding: 0;
+  line-height: .8em;
+  font-size: 250px;
+}
+.notFound404Container p {
+  font-size: 24px;
+}

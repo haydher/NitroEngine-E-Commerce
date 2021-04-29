@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include("./partials/head", {title : "Catalog"}) %> 
+</head>
+<body>
+
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+
+  <% let catalog  %> 
+  <% if(locals.item) {%> 
+  <%  catalog = item%> 
+  <%  }%> 
+ 
+  <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+
+  <section class="mainContainerSection catalog">
+    <%-  include("./partials/navOptions") %> 
+
+    <div class="mainContainer">
+      <div class="catalogItem" id="<%-catalog._id %>">
+       <h5>Item ID</h5>
+       <p><%-catalog._id%></p>
+       
+       <h5>Name</h5>
+       <input type="text" name="name" value="<%-catalog.name%>" class="<%-catalog._id%>">
+
+       <h5>Price</h5>
+       <input type="text" name="price" value="<%-catalog.price%>" class="<%-catalog._id%>">
+
+       <h5>Description</h5>
+       <textarea name="description" class="<%-catalog._id%>"><%-catalog.description%></textarea>
+
+       <h5>Type</h5>
+       <input type="text" name="type" value="<%-catalog.type%>" class="<%-catalog._id%>">
+
+       <h5>Brand</h5>
+       <input type="text" name="brand" value="<%-catalog.brand%>" class="<%-catalog._id%>">
+
+       <h5>Category</h5> 
+       <input type="text" name="category" value="<%-catalog.category%>" class="<%-catalog._id%>">
+
+       <h5>Gender</h5>
+       <input type="text" name="gender" value="<%-catalog.gender%>" class="<%-catalog._id%>">
+
+       <h5>Tags</h5>
+       <input type="text" name="tags" value="<%-catalog.tags%>" class="<%-catalog._id%>">
+
+       <h5>Sizes</h5>
+       <input type="text" name="sizes" value="<%-catalog.sizes%>" class="<%-catalog._id%>">
+
+       <h5>Author</h5>
+       <p><span><%-catalog.author?.firstName%></span> <span><%-catalog.author?.lastName%></span> </p>
+
+       <h5>Uploaded Date</h5>
+       <p><%-catalog.date%></p>
+
+       <h5>Images</h5>
+       <div class="catalogImgContainer">
+         
+        <% catalog.images.forEach(imgs => { %>
+         <div class="itemImgContainer">
+           <img src="/images/<%= imgs%>" class="images">
+           <div class="overLay">
+             <img src="/imgs/icons/cross.svg" id="<%= imgs%>/<%= catalog._id%>">
+           </div>
+         </div>
+        <% }) %>
+       </div>
+       
+       <div class="btnContainer">
+         <button class="btn btn2 update" id="<%-catalog._id%>">Update Item</button>
+         <a href="/upload/hero?id=<%-catalog._id%>" >
+           <button class="btn btn2">Upload Hero</button>
+         </a> 
+         <button class="btn btn2 btnWarning" id="<%-catalog._id%>">Delete Item</button>
+       </div>
+       <div class="message">
+         <p></p>
+       </div>
+     </div>
+    </div>
+  </section>
+  <!-- footer -->
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>
+
+
+<% //catalog[i].images.forEach(imgs => { %>
+  <!-- <div class="itemImgContainer">
+    <img src="/images/<%= //imgs%>" class="images">
+    <div class="overLay">
+      <img src="/imgs/icons/cross.svg" id="<%= //imgs%>/<%= //catalog[i]._id%>">
+    </div>
+  </div> -->
+<% //}) %>
+
+<!--         
+  <div class="uploadImgToCatalog itemImgContainer" id="img-<%- //catalog[i]._id%>">
+    <input type="file" class="fileUpload custom-file-input"/>
+  </div> -->

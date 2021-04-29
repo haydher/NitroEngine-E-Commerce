@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <%- include("./partials/head", {title : "Cart"}) %> 
+</head>
+<body>
+
+ <% let item = [], size, userInfo %> 
+ 
+ <% if (locals.user) { %> 
+ <%  userInfo = user %>
+ <% } %> 
+
+ <% if (locals.itemArr) { %> 
+ <%  item = itemArr %>
+ <% } %> 
+
+ <% if (locals.itemSize) { %> 
+ <%  size = itemSize %>
+ <% } %> 
+
+ <% let totalPrice = 0 %> 
+ <% function getTotalCost(){ %> 
+  <%  item.forEach(e => { %>
+   <% totalPrice += e.price %>
+  <% });  %> 
+  <% return totalPrice.toFixed(2) %> 
+ <% } %> 
+
+ 
+ <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+ 
+  <section class="notFound404section">
+   <div class="notFound404Container">
+    <h1>404</h1>
+    <p>Could not find what you were looking for...</p>
+   </div>
+  </section>
+
+
+ <!-- footer -->
+ <footer>
+  <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %> 
+</body>
+</html>
