@@ -10,11 +10,12 @@
   <%  userInfo = user %>
   <% } %> 
 
-  <% let  message%> 
+  <% let  message %> 
   <% if (locals.messages) { %>
    <% message = messages%> 
   <% } %>
-  
+  <% console.log("message", message) %> 
+
   <% let  path%> 
   <% if (locals.urlPath) { %>
    <% path = urlPath%> 
@@ -28,22 +29,27 @@
    <section class="loginSection">
     <div class="loginContainer">
      <h1>LOGIN</h1>
-     <div class="errMessage">
-      <p><% //if(message?.error) { %> <%= // message?.error %> <% //} %></p>
-      <p>Username or Password is not correct.</p>
-     </div>
-     
+
+     <% if(message) { %>
+      <div class="errMessage">
+       <p><%=  message %></p>
+      </div>
+     <% } %>
+    
      <form action="/account/login/?path=<%= path %> " method="POST">
       
       <p class="label">Username</p>
       <input type="text" id="username" name="username" required /><br />
       
-      <p class="label">Passord</p>
+      <p class="label">Password</p>
       <input type="password" id="password" name="password"" required /><br />
-      <button>Login</button>
+      <button class="btn btn2">Login</button>
      </form>
 
-     <p>Not a member? <a href="/account/register/">Sign Up</a></p>
+     <p class="notAMember">
+      Not a member? 
+      <a href="/account/register/"><span class="link">Register Here!</span></a>
+     </p>
     </div>
    </section>
 

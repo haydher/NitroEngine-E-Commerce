@@ -63,10 +63,10 @@ router.post("/login", async (req, res) => {
   if (validate.error) return res.status(400).send(validate.error.details[0].message);
 
   let user = await User.find({ username: req.body.username });
-  if (user.length < 0 || user == undefined) return res.status(400).send("Username doesnt exist");
+  if (user.length < 1 || user == undefined) return res.status(400).render("login", { messages: "No User with that Username exists."});
 
-  let password = user[0].verifyPassword(req.body.password)
-  if(!password) return res.send("Invalid Password")
+  let password = user[0]?.verifyPassword(req.body.password)
+  if(!password) return res.status(400).render("login", { messages: "Invalid Password"});
 
   let token = user[0].generateAuthToken()
   console.log("req.query.path", req.query)

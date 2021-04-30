@@ -52,11 +52,42 @@ function updateItem(id, params) {
  .then(data => resultMessage(id, data, "updateItem"));
 }
 
+const dltDup = document.querySelectorAll(".duplicate")
+dltDup.forEach(btn => {
+ btn.addEventListener("click", (e)=>{
+  const parent = document.getElementById(btn.id)
+  
+  const url = "/update/item/deleteDup"
+  const item = {
+   itemId: btn.id,
+  }
+  const options = {
+   method: 'PUT', 
+   headers: {
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(item) 
+  }
+  fetch(url, options)
+  .then(response => response.status)
+  .then(data => {
+    if(data == 200){
+      console.log(data)
+      parent.style.display = "none"
+    } else{
+     console.log("Error deleting Duplicate") 
+    }
+  });
+
+  e.preventDefault()
+ })
+});
+
+
 const dltItem = document.querySelectorAll(".btnWarning")
 dltItem.forEach(btn => {
  btn.addEventListener("click", (e)=>{
   const parent = document.getElementById(btn.id)
-  // parent.style.display = "none"
   
   const url = "/update/item/delete"
   const item = {
@@ -71,9 +102,11 @@ dltItem.forEach(btn => {
   }
   fetch(url, options)
   .then(response => response.status)
-  .then(data => console.log(data));
+  .then(data => {
+    console.log(data)
+    parent.style.display = "none"
+  });
   // .then(data => resultMessage(itemId, data, "img"));
-
   e.preventDefault()
  })
 });

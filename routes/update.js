@@ -56,7 +56,11 @@ router.put("/item/:param", [authToken, reqLoginTrue, admin ], async (req, res) =
   //  return res.send(err.stack);
   }) 
   return res.json(item)
- } else return res.status(500)
+ } else if(req.params.param == "deleteDup") {
+  item = await Item.findByIdAndDelete({_id: req.body.itemId})
+  if(!item || item == undefined || item.length < 1) return res.json({status: 500})
+  return res.json(item)
+ }else return res.status(500)
 });
 
 router.get("/:id", [authToken, reqLoginTrue, admin ], async (req, res) => {
