@@ -64,13 +64,28 @@
        <div class="catalogImgContainer">
          
         <% catalog.images.forEach(imgs => { %>
-         <div class="itemImgContainer">
-           <img src="/images/<%= imgs%>" class="images">
-           <div class="overLay">
-             <img src="/imgs/icons/cross.svg" id="<%= imgs%>/<%= catalog._id%>">
-           </div>
-         </div>
+          <div class="itemImgContainer">
+            <img src="/images/<%= imgs%>" class="images">
+            <div class="overLay">
+              <img src="/imgs/icons/cross.svg" id="<%= imgs%>/<%=catalog._id%>">
+            </div>
+          </div>
         <% }) %>
+
+              
+        <div class="uploadImgToCatalog itemImgContainer" id="img-<%-catalog._id%>">
+          <input type="file" class="fileUpload custom-file-input"/>
+        </div>
+          
+        <% //catalog.images.forEach(imgs => { %>
+          <!-- <div class="itemImgContainer">
+            <img src="/images/<%=// imgs%>" class="images">
+            <div class="overLay">
+              <img src="/imgs/icons/cross.svg" id="<%= //imgs%>/<%=// catalog._id%>">
+            </div>
+          </div> -->
+          <%// }) %>
+          
        </div>
        
        <div class="btnContainer">

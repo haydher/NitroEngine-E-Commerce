@@ -4,9 +4,9 @@
     <%- include("./partials/head", {title : "Upload Item"}) %> 
   </head>
  <body>
-   
+  <% let errMessage %> 
   <% if (locals.message) { %>
-   <h5> <%= message %>  </h5>
+   <<%= errMessage = message %>
   <% } %>
 
   <% let userInfo = undefined %> 
@@ -26,6 +26,7 @@
     <%-  include("./partials/navOptions") %>
 
     <div class="mainContainer">
+      <h5>errMessage</h5><br>
       <form action="/upload/item" enctype="multipart/form-data" method="POST">
         <label for="price">Item Price: </label><br>
         <% if (fieldValues?.price != undefined) { %>

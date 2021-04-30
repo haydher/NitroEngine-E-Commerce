@@ -105,6 +105,39 @@ dltImg.forEach(btn => {
  })
 });
 
+const uploadImg = document.querySelector(".custom-file-input")
+uploadImg.addEventListener("change", ()=>{
+ const parentElement = uploadImg.parentElement.id.split("-")[1]
+ const parentId = document.getElementById(parentElement)
+ const parentNode = parentId.querySelector(".catalogImgContainer")
+ const insertBeforeNode = document.getElementById(uploadImg.parentElement.id)
+
+ const formData = new FormData()
+ formData.append("uploadImg", uploadImg.files[0])
+
+ const url = `/update/image/upload?id=${parentElement}`
+ const options = {
+  method: 'PUT', 
+  body: formData
+ }
+ fetch(url, options)
+ .then(response => response.status)
+ .then(data => {
+  resultMessage(parentElement, data, "uploadedImg")
+
+  const file = uploadImg.files[0]
+
+  if(file){
+   const reader = new FileReader()
+   reader.addEventListener("load", ()=>{
+    makeImgContainer(file.name, reader, parentElement, parentNode, insertBeforeNode)
+   })
+   reader.readAsDataURL(file)
+  }
+ });
+
+})
+
 function resultMessage(id, status, type){
  const parent = document.getElementById(id)
  const message = parent.querySelector(".message p")
@@ -116,51 +149,12 @@ function resultMessage(id, status, type){
   if(status == 200) message.innerHTML = "Item Updated Successfully"
   else message.innerHTML = "Failed to Update Item"
  }
+ if(type == "uploadedImg"){
+  if(status == 200) message.innerHTML = "Item Updated Successfully"
+  else message.innerHTML = "Failed to Update Item"
+ }
 }
-
-// const uploadImg = document.querySelector(".custom-file-input")
-// uploadImg.addEventListener("change", ()=>{
-//  const parentElement = uploadImg.parentElement.id.split("-")[1]
-//  const parentId = document.getElementById(parentElement)
-//  const parentNode = parentId.querySelector(".catalogImgContainer")
-//  const insertBeforeNode = document.getElementById(uploadImg.parentElement.id)
-
-//  const file = uploadImg.files[0]
-
-//  if(file){
-//   console.log("file", file)
-//   const reader = new FileReader()
-//   reader.addEventListener("load", ()=>{
-//    console.log("reader", reader)
-//    // console.log("reader.result", reader.result)
-//    // makeImgContainer(file.name, reader, parentElement, parentNode, insertBeforeNode)
-//   })
-//   reader.readAsDataURL(file)
-//  }
-// })
-
 function makeImgContainer(imgName, imgSrc, id, parentNode, insertBeforeNode){
-
- console.log("imgName",imgName)
- console.log("id", imgSrc.result)
- console.log("id",id)
-
-  const url = "/update/image/upload"
-  const item = {
-   imgName,
-   imgSrc: imgSrc,
-   itemId: id,
-  }
-  const options = {
-   method: 'PUT', 
-   headers: {
-     'Content-Type': 'application/json'
-   },
-   body: JSON.stringify(item) 
-  }
-  fetch(url, options)
-  .then(response => response.status)
-  .then(data => console.log(data));
 
  const itemImgContainer = document.createElement("div")
  const uploadedImg = document.createElement("img")
@@ -170,7 +164,7 @@ function makeImgContainer(imgName, imgSrc, id, parentNode, insertBeforeNode){
  itemImgContainer.classList.add("itemImgContainer")
  overLay.classList.add("overLay")
 
- uploadedImg.src = `/imgs/mainImgs/${imgSrc}`
+ uploadedImg.src = imgSrc.result
  uploadedImg.classList.add("images")
 
  cross.src = "/imgs/icons/cross.svg"

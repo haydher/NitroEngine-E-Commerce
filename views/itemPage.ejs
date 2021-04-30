@@ -129,67 +129,88 @@
    <div class="filterContainer">
     <div class="itemsShownFilter">
      <h5 class="filterMainHeader">Filter By:</h5>
+     <form action="/item?update=filter" method="POST">
+        <div id="category" class="filterHeader category">
+          <h5>Category</h5>
+          <img src="imgs/icons/plucIcon.svg" />
+        </div>
+        <div class="categoryContent contentOptions">
+          <input type="checkbox" name="hoodie" id="categoryContentHoodie" />
+          <label for="categoryContentHoodie">Hoodie</label>
+          <br />
+          <input type="checkbox" name="joggers" id="categoryContentJoggers" />
+          <label for="categoryContentJoggers">Joggers</label>
+          <br />
+          <input type="checkbox" name="shoes" id="categoryContentShoes" />
+          <label for="categoryContentShoes">Shoes</label>
+          <br />
+          <input type="checkbox" name="shirt" id="categoryContentShirts" />
+          <label for="categoryContentShirts">Shirts</label>
+        </div>
 
-     <div id="category" class="filterHeader category">
-      <h5>Category</h5>
-      <img src="imgs/icons/plucIcon.svg" />
-     </div>
-     <div class="categoryContent contentOptions">
-      <input type="checkbox" name="hoodie" id="categoryContentHoodie" />
-      <label for="categoryContentHoodie">Hoodie</label>
-      <br />
-      <input type="checkbox" name="joggers" id="categoryContentJoggers" />
-      <label for="categoryContentJoggers">Joggers</label>
-      <br />
-      <input type="checkbox" name="shoes" id="categoryContentShoes" />
-      <label for="categoryContentShoes">Shoes</label>
-      <br />
-      <input type="checkbox" name="shirt" id="categoryContentShirts" />
-      <label for="categoryContentShirts">Shirts</label>
-     </div>
+        <div id="color" class="filterHeader color">
+          <h5>Color</h5>
+          <img src="imgs/icons/plucIcon.svg" />
+        </div>
+        <div class="colorContent contentOptions">
+          <input type="checkbox" name="red" id="colorontentRed" />
+          <label for="colorontentRed">Red</label>
+          <br />
+          <input type="checkbox" name="orange" id="colorontentOrange" />
+          <label for="colorontentOrange">Orange</label>
+          <br />
+          <input type="checkbox" name="yellow" id="colorontentYellow" />
+          <label for="colorontentYellow">Yellow</label>
+          <br />
+          <input type="checkbox" name="green" id="colorontentGreen" />
+          <label for="colorontentGreen">Green</label>
+          <br />
+          <input type="checkbox" name="blue" id="colorontentBlue" />
+          <label for="colorontentBlue">Blue</label>
+          <br />
+          <input type="checkbox" name="purple" id="colorontentPurple" />
+          <label for="colorontentPurple">Purple</label>
+          <br />
+          <input type="checkbox" name="white" id="colorontentWhite" />
+          <label for="colorontentWhite">White</label>
+          <br />
+          <input type="checkbox" name="black" id="colorontent" />
+          <label for="colorontent">Black</label>
+          <br />
+        </div>
 
-     <div id="color" class="filterHeader color">
-      <h5>Color</h5>
-      <img src="imgs/icons/plucIcon.svg" />
-     </div>
-     <div class="colorContent contentOptions">
-      <input type="checkbox" name="red" id="colorontentRed" />
-      <label for="colorontentRed">Red</label>
-      <br />
-      <input type="checkbox" name="orange" id="colorontentOrange" />
-      <label for="colorontentOrange">Orange</label>
-      <br />
-      <input type="checkbox" name="yellow" id="colorontentYellow" />
-      <label for="colorontentYellow">Yellow</label>
-      <br />
-      <input type="checkbox" name="green" id="colorontentGreen" />
-      <label for="colorontentGreen">Green</label>
-      <br />
-      <input type="checkbox" name="blue" id="colorontentBlue" />
-      <label for="colorontentBlue">Blue</label>
-      <br />
-      <input type="checkbox" name="purple" id="colorontentPurple" />
-      <label for="colorontentPurple">Purple</label>
-      <br />
-      <input type="checkbox" name="white" id="colorontentWhite" />
-      <label for="colorontentWhite">White</label>
-      <br />
-      <input type="checkbox" name="black" id="colorontent" />
-      <label for="colorontent">Black</label>
-      <br />
-     </div>
+        <div id="brand" class="filterHeader gender">
+          <h5>Brand</h5>
+          <img src="imgs/icons/plucIcon.svg" />
+        </div>
+        <div class="brandContent contentOptions">
+          <input type="checkbox" name="nike" id="brandContentNike" />
+          <label for="brandContentNike">Nike</label>
+          <br />
+          <input type="checkbox" name="adidas" id="brandContentAdidas" />
+          <label for="brandContentAdidas">Adidas</label>
+          <br />
+          <input type="checkbox" name="reebok" id="brandContentReebok" />
+          <label for="brandContentReebok">Reebok</label>
+          <br />
+          <input type="checkbox" name="hollistor" id="brandContentHollistor" />
+          <label for="brandContentHollistor">Hollistor</label>
+        </div>
 
-     <div id="gender" class="filterHeader gender">
-      <h5>Gender</h5>
-      <img src="imgs/icons/plucIcon.svg" />
-     </div>
-     <div class="genderContent contentOptions">
-      <input type="checkbox" name="male" id="genderContentMake" />
-      <label for="genderContentMake">Male</label>
-      <br />
-      <input type="checkbox" name="Female" id="genderContentFemale" />
-      <label for="genderContentFemale">Female</label>
-     </div>
+        <div id="gender" class="filterHeader gender">
+          <h5>Gender</h5>
+          <img src="imgs/icons/plucIcon.svg" />
+        </div>
+        <div class="genderContent contentOptions">
+          <input type="checkbox" name="men" id="genderContentMake" />
+          <label for="genderContentMake">Male</label>
+          <br />
+          <input type="checkbox" name="women" id="genderContentFemale" />
+          <label for="genderContentFemale">Female</label>
+        </div>
+        <br>
+        <button class="btn btn2">Apply Results</button>
+      </form>
     </div>
    </div>
 
@@ -201,7 +222,7 @@
           <div class="itemCard">
             <a href="/selectedItem/<%= item._id%>">
               <div class="itemCardImgContainer">
-                <img src="/images/<%=item.images[0]%>"/>
+                <img src="/images/<%= item.images[0]%>"/>
               </div>
             </a>
             <p class="itemHeading"><%= item.name%></p>
@@ -225,8 +246,6 @@
           </div>
         <% }) %>
       <% } %>  
-
-
 
      <!-- 
      

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <%- include("./partials/head", {title : "Login"}) %> 
  </head>
  <body>
+ <body>
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
 
   <% let  message%> 
   <% if (locals.messages) { %>
@@ -18,24 +20,41 @@
    <% path = urlPath%> 
   <% } %>
   
+  
+  <!-- Header -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
 
-  <nav>
-   <h1>LOGO</h1>
-   <a href="/">Home</a>
-   <a href="/account">Account</a>
-  </nav>
+   <section class="loginSection">
+    <div class="loginContainer">
+     <h1>LOGIN</h1>
+     <div class="errMessage">
+      <p><% //if(message?.error) { %> <%= // message?.error %> <% //} %></p>
+      <p>Username or Password is not correct.</p>
+     </div>
+     
+     <form action="/account/login/?path=<%= path %> " method="POST">
+      
+      <p class="label">Username</p>
+      <input type="text" id="username" name="username" required /><br />
+      
+      <p class="label">Passord</p>
+      <input type="password" id="password" name="password"" required /><br />
+      <button>Login</button>
+     </form>
 
-  <p><% if(message?.error) { %> <%= message?.error %> <% } %></p>
-  <form action="/account/login/?path=<%= path %> " method="POST">
-   <label for="username">username</label>
-   <input type="text" id="username" name="username" required /><br />
-   <label for="password">password</label>
-   <input type="password" id="password" name="password"" required /><br />
+     <p>Not a member? <a href="/account/register/">Sign Up</a></p>
+    </div>
+   </section>
 
-   <button>Login</button>
-  </form>
-  <br />
 
-  <a href="/account/register/">Sign Up</a>
- </body>
-</html>
+
+  <!-- footer -->
+
+  <footer>
+   <%- include("./partials/footer") %> 
+   </footer>
+   <%- include("./partials/scripts") %> 
+  </body>
+ </html>
+ 

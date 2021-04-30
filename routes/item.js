@@ -82,7 +82,6 @@ router.get("/catalog/collections", [authToken, reqLoginTrue, admin], async (req,
   res.render("collectionCatalog", {collection})
 });
 
- 
 router.post("/searchResult", [authToken], async (req, res) => {
   console.log("SEARCH RESULT", req.body.searchValue)
 
@@ -105,7 +104,42 @@ router.post("/searchResult", [authToken], async (req, res) => {
   // res.render("catalog", {item})
   res.json()
 });
+router.post("/?", [authToken], async (req, res) => {
 
+  let filterStr = Object.keys(req.body).join(" ")
+
+  let user = await User.findById(req.userId).select("-password");
+  if(user == undefined) user = undefined
+
+  // console.log(req.body.men)
+  item = await Item.find()
+  if (!item) return res.status(400).send('Invalid Search.');
+
+  const limit = 40
+  let searchResult 
+  let filteredResultStr = `Filtered Results`
+
+  if(req.body.men)
+    searchResult = await Item.find({$text: {$search : `${filterStr} -women`}}, {score: {$meta: "textScore"}})
+      .sort({score: {$meta: "textScore"}}).limit(limit)
+  
+  else if(req.body.women)
+    searchResult = await Item.find({$text: {$search : `${filterStr} -men`}}, {score: {$meta: "textScore"}})
+      .sort({score: {$meta: "textScore"}}).limit(limit)
+
+  else 
+  searchResult = await Item.find({$text: {$search : `${filterStr}`}}, {score: {$meta: "textScore"}})
+    .sort({score: {$meta: "textScore"}}).limit(limit)
+
+  console.log("searchResult", searchResult)
+
+  if(searchResult == undefined || searchResult.length < 1)
+  return res.status(404).render("404")
+  if (user != undefined && searchResult != undefined && searchResult.length > 0)
+  return res.render("itemPage", { user, item, searchResult, searchField : filteredResultStr});
+  else return res.render("itemPage", { item,  searchResult, searchField : filteredResultStr });
+
+})
 function getUpperCase(string){
  if (typeof string !== 'string') return ''
  return string.charAt(0).toUpperCase() + string.slice(1)
