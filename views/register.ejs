@@ -27,11 +27,12 @@
    <div class="loginContainer">
     <h1>REGISTER</h1>
 
-    <% if(message?.error) { %>
+    <% if(message) { %>
      <div class="errMessage">
-      <p><%=  message?.error %></p>
+      <p><%=  message %></p>
      </div>
     <% } %>
+    <div class="errMessageContainer"></div>
    
         
       <form action="/account/register/?path=<%= path %>"  method="POST">
@@ -70,9 +71,9 @@
        <input type="password" id="password" name="password" required /><br /><br />
 
        <p class="label">Phone Number</p>
-       <input type="text" id="phone" name="phone" required /><br /><br />
+       <input type="number" id="phone" name="phone" required /><br /><br />
        
-       <button class="btn btn2">Submit</button>
+       <button class="btn btn2 submit">Submit</button>
       </form>
       <p class="notAMember">
        Already a member? 
@@ -87,6 +88,7 @@
    <%- include("./partials/footer") %> 
    </footer>
    <%- include("./partials/scripts") %> 
+   <script src="/js/formValidate.js"></script>
   </body>
  </html>
  

@@ -99,11 +99,11 @@ function validateUser(params) {
  const schema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  gender: Joi.string().required(),
+  gender: Joi.string().required().lowercase(),
   dob: Joi.date().required(),
-  username: Joi.string().required(),
-  email: Joi.string().required().email(),
-  phone: Joi.string().required(),
+  username: Joi.string().required().lowercase(),
+  email: Joi.string().required().email().lowercase(),
+  phone: Joi.string().min(10).required(),
   password: Joi.string().required(),
   isAdmin: Joi.boolean(),
  });

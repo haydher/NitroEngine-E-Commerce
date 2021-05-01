@@ -10,38 +10,70 @@
   <%  userInfo = user %>
   <% } %> 
 
+  <% function capLetter(string) { %> 
+    <% return string.charAt(0).toUpperCase() + string.slice(1); %> 
+  <% } %>
+
+  <% function formatPhoneNumber(phoneNumberString) { %>
+    <% var cleaned = ('' + phoneNumberString).replace(/\D/g, ''); %>
+    <% var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/); %>
+    <% if (match) { %>
+      <% return '(' + match[1] + ') ' + match[2] + '-' + match[3]; %>
+    <% }%>
+    <% return null;%>
+  <% }%>
+
+
   <!-- NavBar -->
   <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
-    
-  
 
+  <section class="accountSection">
+    <div class="accountInfoContainer">
+      <h1 class="cartheader">Account Information</h1>
+      <% if(userInfo != undefined) { %> 
+        <div class="fieldContainer">
+          <p>Full Name</p>
+          <p><%= userInfo.firstName %> <%= userInfo.lastName %></p>
+        </div>
+        
+        <div class="fieldContainer">
+          <p>Username</p>
+          <p><%= capLetter(userInfo.username) %></p>
+        </div>
 
-  <h2>Account</h2>
-  <p>Name</p>
-  <span><%= userInfo.firstName %></span> <span><%= userInfo.lastName %></span>
-  <br>
-  <br>
-  <p>Gender</p>
-  <span><%= userInfo.gender %></span>
-  <br>
-  <br>
-  <p>Date of Birth</p>
-  <span><%= userInfo.dob.getMonth() %> / <%= userInfo.dob.getDay()  %> / <%= userInfo.dob.getYear()-100 %></span>
-  <br>
-  <br>
-  <p>Username</p>
-  <span><%= userInfo.username %></span>
-  <br>
-  <br>
-  <p>Email</p>
-  <span><%= userInfo.email %></span> 
-  <br>
-  <br>
-  <p>Phone</p>
-  <span><%= userInfo.phone %></span> 
-  <br>
-  <br>
+        <div class="fieldContainer">
+          <p>Date Of Birth</p>
+          <p><%= userInfo.dob.toDateString()%></p>
+        </div>
+        
+        <div class="fieldContainer">
+          <p>Gender</p>
+          <p><%= capLetter(userInfo.gender) %></p>
+        </div>
+        
+        <div class="fieldContainer">
+          <p>Email</p>
+          <p><%= capLetter(userInfo.email) %></p>
+        </div>
+        
+        <div class="fieldContainer">
+          <p>Phone Number</p>
+          <p><%= formatPhoneNumber(userInfo.phone) %></p>
+        </div>
+        
+        <div class="fieldContainer">
+          <p> </p>
+          <a href="/account/edit">
+            <button on class="btn btn2">Edit Profile</button>
+          </a>
+          <a href="/account/changePassword">
+            <button on class="btn btn2 changePass">Change Password</button>
+          </a>
+        </div>
+      <% } %> 
+    </div>
+  </section>
 
   <footer>
     <%- include("./partials/footer") %> 

@@ -22,9 +22,11 @@ router.get("/", [authToken], async (req, res) => {
  if (!item) return res.status(400).send('Invalid Search.');
 
  let genderSearch = `${getUpperCase(req.query?.gender)} ${getUpperCase(req.query?.category)}`
+
  // for collections
  if(req.query.gender) {
-  let searchResult = await Item.find({gender: { $regex : new RegExp(req.query.gender, "i")} , category: req.query.category})
+  // let searchResult = await Item.find({gender: { $regex : new RegExp(req.query.gender, "i")} , category: req.query.category})
+  let searchResult = await Item.find({gender: req.query.gender, category: req.query.category})
   if(searchResult == undefined || searchResult.length < 1)
    return res.status(404).render("404")
   if (user != undefined && searchResult != undefined && searchResult.length > 0)

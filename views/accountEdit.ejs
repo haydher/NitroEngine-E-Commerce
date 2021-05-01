@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+     <%- include("./partials/head", {title : "Edit Account"}) %> 
+ </head>
+ <body>
+   
+  <% let userInfo = undefined %> 
+  <% if (locals.user) { %> 
+  <%  userInfo = user %>
+  <% } %> 
+
+   
+  <% function capLetter(string) { %> 
+   <% return string.charAt(0).toUpperCase() + string.slice(1); %> 
+  <% } %>
+   
+  <% function trimWhiteSpace(string) { %> 
+   <% return string.replace(/ /g,'') %> 
+  <% } %>
+
+  <!-- NavBar -->
+  <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
+  <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
+
+  <section class="accountSection">
+    <div class="accountInfoContainer editAccount">
+      <h1 class="cartheader">Account Information</h1>
+      <% if(userInfo != undefined) { %> 
+        <div class="fieldContainer">
+          <p>First Name</p>
+          <input type="text" name="firstName" id="firstName" value="<%= userInfo.firstName %>" required>
+        </div>
+        
+        <div class="fieldContainer">
+         <p>Last Name</p>
+         <input type="text" name="lastName" id="lastName" value="<%= userInfo.lastName %>" required>
+        </div>
+
+        <div class="fieldContainer">
+         <p>Username</p>
+         <% let username = trimWhiteSpace(capLetter(userInfo.username)) %> 
+         <input type="text" name="username" id="username" value="<%=username%>" required>
+        </div>
+        
+        <div class="fieldContainer">
+         <p>Date Of Birth</p>
+         <p><%= userInfo.dob.toDateString()%></p>
+        </div>
+        
+        <div class="fieldContainer">
+         <p>Gender</p>
+         <p><%= capLetter(userInfo.gender) %></p>
+        </div>
+        
+        <div class="fieldContainer">
+         <p>Email</p>
+         <input type="email" name="email" id="email" value="<%= userInfo.email %>" required>
+        </div>
+        
+        <div class="fieldContainer">
+         <p>Phone</p>
+         <input type="text" name="phone" id="phone" value="<%= userInfo.phone %>" required>
+        </div>
+
+        <div class="fieldContainer resError">
+         <p></p>
+         <p></p>
+        </div>
+
+        <div class="fieldContainer errMessageContainer">
+        </div>
+        
+
+        <div class="fieldContainer">
+          <p> </p>
+          <button class="btn btn2 editAccountBtn">Save Changes</button>
+        </div>
+
+     <% } %> 
+    </div>
+  </section>
+
+  <footer>
+    <%- include("./partials/footer") %> 
+  </footer>
+  <%- include("./partials/scripts") %>
+  <script src="/js/editAccount.js"></script>
+  </body>
+</html>

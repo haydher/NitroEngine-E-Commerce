@@ -28,12 +28,12 @@ router.get("/register", [authToken, reqLoginFalse] , async (req, res) => {
 // post data to sign up page
 router.post("/register", [authToken, reqLoginFalse], async (req, res) => {
  const validate = validateUser(req.body);
- if (validate.error) return res.status(400).send(validate.error.details[0].message);
+ if (validate.error) return res.status(400).render("register", {messages: validate.error.details[0].message.error});
 
  let user = await User.find({
   $or: [{ username: req.body.username }, { email: req.body.email }, { phone: req.body.phone }],
  });
- if (user.length > 0) return res.status(400).send("User already exists");
+ if (user.length > 0) return res.status(400).render("register",{ messages: "User already exists"});
 
  user = new User(req.body);
  // this generates a key value of 10 digits to decrypt the password after
@@ -79,42 +79,92 @@ router.post("/logout", [authToken, reqLoginTrue], (req, res) => {
  res.cookie("token", "", {expire: Date.now()}).redirect("/");
 });
 
-router.get("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
- res.render("changePass");
+router.get("/edit",[authToken, reqLoginTrue], async (req, res)=> {
+  let user = await User.findById(req.userId).select("-password")
+  if(user.length < 1 || !user || user == undefined) return res.render(404)
+  
+  res.render("accountEdit", {user})
+})
+
+router.put("/edit",[authToken, reqLoginTrue], async (req, res)=> {
+  console.log("req.body", req.body)
+  let user = await User.findById(req.userId)
+  if(user.length < 1 || user == undefined || !user) user = undefined
+
+  let userDup = await User.find({username: req.body.username })
+  if(userDup.length > 0 && userDup != undefined && userDup[0].username == user.username)
+    console.log("same user with same username, ignore the message", userDup[0].username, user.username)
+  else if(userDup.length > 0 && userDup != undefined && userDup[0].username != user.username)
+   return res.send({ status: 500, message: "Username already taken"})
+
+  userDup = await User.find({email: req.body.email })
+  if(userDup.length > 0 && userDup != undefined && userDup[0].email == user.email)
+    console.log("same user with same email, ignore the message", userDup[0].email, user.email)
+  else if(userDup.length > 0 && userDup != undefined && userDup[0].email != user.email)
+   return res.send({ status: 500,message: "User with that Email already exists"})
+
+  userDup = await User.find({phone: parseInt(req.body.phone) })
+  if(userDup.length > 0 && userDup != undefined && userDup[0].phone == user.phone)
+    console.log("same user with same phone, ignore the message", userDup[0].phone, user.phone)
+  else if(userDup.length > 0 && userDup != undefined && userDup[0].phone != user.phone)
+   return res.send({ status: 500, message: "User with that Phone Number already exists"})
+
+  console.log("something wasnt the same, and no dups were found. Should update account")
+  if(user.username != req.body.user ||
+    user.email != req.body.email || 
+    user.phone != req.body.phone){
+      user = await User.updateOne({"_id": req.userId}, 
+        {
+          $set: {
+            "firstName": req.body.firstName,
+            "lastName": req.body.lastName,
+            "username": req.body.username,
+            "email": req.body.email,
+            "phone": req.body.phone,
+          },
+        },
+        { useUnifiedTopology: true, returnOriginal: false}
+      )
+    console.log("account updated successfully")
+    return res.send({status: 200, message: "Account Updated Successfully"})
+  
+  } else return res.send({status: 304, message: "No changes made."})
+})
+
+router.get("/changePassword", [authToken, reqLoginTrue], async (req, res) => {
+  let user = await User.findById(req.userId)
+  if(!user || user.length < 1) user = undefined
+  res.render("changePass", {user});
 });
 
-router.post("/changepassword", [authToken, reqLoginTrue], async (req, res) => {
- let userId;
- try {
-  if (req.session.passport != undefined) {
-   console.log("req.session.passport.user - login", req.session.passport.user);
-   userId = req.session.passport.user;
-  }
- } catch (error) {
-  console.log("ERROR: ", error);
- }
+router.put("/changePassword", [authToken, reqLoginTrue], async (req, res) => {
 
- console.log("req.body.password", req.body.password);
+ console.log("req.body", req.body);
+
+ let user = await User.findById(req.userId)
+ if(!user || user == undefined || user.length < 1) return res.send({status: 400, message: "User not found."})
+
+ let verifyPass = user.verifyPassword(req.body.currPass)
+ console.log("verify password", verifyPass)
+ 
+ if(verifyPass == false) return res.send({status: 500, message: "Current Password is not correct"})
+ 
+ if(req.body.currPass === req.body.newPass) return res.send({status: 500, message: "New Password can not be same as old password"})
+ if(req.body.newPass != req.body.confPass) return res.send({status: 500, message: "Passwords did not match."})
 
  const salt = await bcrypt.genSalt(10);
- // this makes the password hashed so its not stored as a plain text
- let newPassword = await bcrypt.hash(req.body.password, salt);
+ let newPassword = await bcrypt.hash(req.body.newPass, salt);
  console.log("newPassword", newPassword);
 
- const user = await User.findByIdAndUpdate(
-  userId,
-  {
-   password: newPassword,
-  },
-  { new: true }
+  await User.findByIdAndUpdate(req.userId,
+    {
+      password: newPassword,
+    },
+    { new: true }
  );
-
- if (!user) return res.status(404).send("The user with the given ID was not found.");
  console.log("Password updated");
- console.log(user);
 
- // res.render("changePass");
- res.send("Password updated");
+  res.send({status: 200, message: "Password Changed Successfully."})
 });
 
 module.exports = router;

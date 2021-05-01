@@ -83,7 +83,6 @@ dltDup.forEach(btn => {
  })
 });
 
-
 const dltItem = document.querySelectorAll(".btnWarning")
 dltItem.forEach(btn => {
  btn.addEventListener("click", (e)=>{
