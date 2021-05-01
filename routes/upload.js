@@ -135,8 +135,8 @@ async (req, res) => {
  promises.push(uploadFile(req.files?.heroCoverImg[0]));
  promises.push(uploadFile(req.files?.heroItemImg[0]));
  Promise.all(promises).then((data)=>{
-  deleteFile(imgPath, req.files?.heroCoverImg)
-  deleteFile(imgPath, req.files?.heroItemImg)
+  // deleteFile(imgPath, req.files?.heroCoverImg)
+  // deleteFile(imgPath, req.files?.heroItemImg)
   return res.redirect("../item/catalog");
  }).catch((err)=>{
   return res.render("uploadHero", { message: "Error Uploading file to AWS S3", });
@@ -191,7 +191,7 @@ async (req, res) => {
   promises.push(uploadFile(file));
  }
  Promise.all(promises).then((data)=>{
-  deleteFile(imgPath, req.files.collectionImg)
+  // deleteFile(imgPath, req.files.collectionImg)
   return res.render("uploadCollections", { message: "File to Collections Uploaded Successfully"});
  }).catch((err)=>{
   return res.send(err.stack);
