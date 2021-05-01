@@ -68,7 +68,11 @@
        <input type="email" id="email" name="email" required /><br /><br />
 
        <p class="label">Password</p>
-       <input type="password" id="password" name="password" required /><br /><br />
+       <!-- <input type="password" id="password" name="password" required /><br /><br /> -->
+       <div class="inputPassContainer">
+        <input type="password" id="password" name="password" required /><br /><br />
+        <img src="/imgs/icons/passwordShow.png" id="showPassBtnCurrPassword" class="togglePassBtn">
+      </div>
 
        <p class="label">Phone Number</p>
        <input type="number" id="phone" name="phone" required /><br /><br />
@@ -88,6 +92,7 @@
    <%- include("./partials/footer") %> 
    </footer>
    <%- include("./partials/scripts") %> 
+   <script src="/js/editAccount.js"></script>
    <script src="/js/formValidate.js"></script>
   </body>
  </html>

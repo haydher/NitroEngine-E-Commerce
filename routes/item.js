@@ -13,7 +13,7 @@ const env = require("dotenv").config();
 router.use(express.urlencoded({ extended: true }));
 
 router.get("/", [authToken], async (req, res) => {
-
+ console.log("in item page")
  let user = await User.findById(req.userId).select("-password");
  if(user == undefined) user = undefined
  let searchField = req.query.collections || req.query.search
@@ -34,9 +34,10 @@ router.get("/", [authToken], async (req, res) => {
   else return res.render("itemPage", { item,  searchResult, searchField : genderSearch });
  }
 
+ console.log("req.query", req.query)
  // for colors and search field
  if(searchField) {
-  let searchResult = await Item.find({$text: {$search : `${searchField}`}}, {score: {$meta: "textScore"}})
+  let searchResult = await Item.find({$text: {$search : searchField }}, {score: {$meta: "textScore"}})
     .sort({score: {$meta: "textScore"}})
   if(searchResult == undefined || searchResult.length < 1)
    return res.status(404).render("404")
@@ -106,6 +107,7 @@ router.post("/searchResult", [authToken], async (req, res) => {
   // res.render("catalog", {item})
   res.json()
 });
+
 router.post("/?", [authToken], async (req, res) => {
 
   let filterStr = Object.keys(req.body).join(" ")
@@ -117,7 +119,7 @@ router.post("/?", [authToken], async (req, res) => {
   item = await Item.find()
   if (!item) return res.status(400).send('Invalid Search.');
 
-  const limit = 40
+  const limit = 3
   let searchResult 
   let filteredResultStr = `Filtered Results`
 
@@ -133,6 +135,9 @@ router.post("/?", [authToken], async (req, res) => {
   searchResult = await Item.find({$text: {$search : `${filterStr}`}}, {score: {$meta: "textScore"}})
     .sort({score: {$meta: "textScore"}}).limit(limit)
 
+  console.log("req.query", req.query)
+  console.log("filterStr", filterStr)
+  
   console.log("searchResult", searchResult)
 
   if(searchResult == undefined || searchResult.length < 1)
@@ -142,6 +147,7 @@ router.post("/?", [authToken], async (req, res) => {
   else return res.render("itemPage", { item,  searchResult, searchField : filteredResultStr });
 
 })
+
 function getUpperCase(string){
  if (typeof string !== 'string') return ''
  return string.charAt(0).toUpperCase() + string.slice(1)

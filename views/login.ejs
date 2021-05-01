@@ -43,7 +43,10 @@
       <input type="text" id="username" name="username" required /><br />
       
       <p class="label">Password</p>
-      <input type="password" id="password" name="password"" required /><br />
+      <div class="inputPassContainer">
+       <input type="password" id="password" name="password"" required /><br />
+        <img src="/imgs/icons/passwordShow.png" id="showPassBtnCurrPassword" class="togglePassBtn">
+      </div>
       <button class="btn btn2 submit">Login</button>
      </form>
 
@@ -62,6 +65,7 @@
    <%- include("./partials/footer") %> 
    </footer>
    <%- include("./partials/scripts") %> 
+   <script src="/js/editAccount.js"></script>
    <script src="/js/formValidate.js"></script>
   </body>
  </html>

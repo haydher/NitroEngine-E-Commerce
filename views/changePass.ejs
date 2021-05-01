@@ -29,17 +29,26 @@
       <% if(userInfo != undefined) { %> 
         <div class="fieldContainer">
           <p>Current Password</p>
-          <input type="password" name="password" id="password" required>
+          <div class="inputPassContainer">
+            <input type="password" name="password" id="password" required>
+            <img src="/imgs/icons/passwordShow.png" id="showPassBtnCurrPassword" class="togglePassBtn">
+          </div>
         </div>
-        
+          
         <div class="fieldContainer">
          <p>New Password</p>
-         <input type="password" name="newPassword" id="newPassword"  required>
+         <div class="inputPassContainer">
+           <input type="password" name="newPassword" id="newPassword"  required>
+           <img src="/imgs/icons/passwordShow.png" id="showPassBtnNewPassword" class="togglePassBtn">
+         </div>
         </div>
 
         <div class="fieldContainer">
          <p>Confirm Password</p>
-         <input type="password" name="confirmPassword" id="confirmPassword" required>
+         <div class="inputPassContainer">
+           <input type="password" name="confirmPassword" id="confirmPassword" required>
+           <img src="/imgs/icons/passwordShow.png" id="showPassBtnConfPassword" class="togglePassBtn">
+         </div>
         </div>
 
         <div class="fieldContainer resError">
@@ -53,7 +62,12 @@
         <div class="fieldContainer">
           <p> </p>
           <button class="btn btn2 changePassword">Change Password</button>
+          <a href="/account">
+            <button class="btn btn2 cancelBtn">Cancel</button>
+          </a>
+          
         </div>
+
 
      <% } %> 
     </div>

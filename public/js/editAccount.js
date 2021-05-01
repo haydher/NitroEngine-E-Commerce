@@ -72,7 +72,7 @@ editProfile?.addEventListener("click", (e)=>{
 })
 
 const chngPassBtn = document.querySelector(".changePassword")
-chngPassBtn.addEventListener("click", (e)=>{
+chngPassBtn?.addEventListener("click", (e)=>{
 
   let currPass, newPass, confPass, validate = true, matched = false
   accountInput.forEach(input => {
@@ -117,7 +117,6 @@ chngPassBtn.addEventListener("click", (e)=>{
     },
     body: JSON.stringify(item) 
   }
-
   if(validate && matched){
     fetch(url, options)
     .then(response => response.json())
@@ -159,8 +158,11 @@ function passNotMatch(errMsg, status) {
       else newPErr.innerHTML = "Passwords did not match."
     }
   } else if(status == "clear"){
-    errMsg.lastElementChild.classList.remove("errMessage")
-    newPErr.innerHTML = ""
+    errMsg.lastElementChild?.classList.remove("errMessage")
+    console.log("errMsg",errMsg)
+    console.log("errMsg.lastElementChild",errMsg.lastElementChild)
+    if(errMsg.lastElementChild != null)
+      errMsg.lastElementChild.innerHTML = ""
   }
   
 }
@@ -179,5 +181,33 @@ function showError(errMsg){
     errMsg.classList.add("showOnce")
   } else {
     errMsg.lastElementChild.innerHTML = "All Fields must have a value."
+  }
+}
+
+const showPassBtn = document.querySelectorAll(".togglePassBtn")
+
+showPassBtn.forEach(btn => {
+  btn.addEventListener("click", (e)=>{
+    if(btn.id == "showPassBtnCurrPassword"){
+      const input = document.querySelector("input[name='password']")
+      togglePass(input, btn)
+    } else if(btn.id == "showPassBtnNewPassword"){
+      const input = document.querySelector("input[name='newPassword']")
+      togglePass(input, btn)
+    } else if(btn.id == "showPassBtnConfPassword"){
+      const input = document.querySelector("input[name='confirmPassword']")
+      togglePass(input, btn)
+    } 
+    e.preventDefault()
+  })
+});
+
+function togglePass(input, img){
+  if (input.type === "password") {
+    input.type = "text";
+    img.src = "/imgs/icons/passwordHide.png"
+  } else {
+    input.type = "password";
+    img.src = "/imgs/icons/passwordShow.png"
   }
 }

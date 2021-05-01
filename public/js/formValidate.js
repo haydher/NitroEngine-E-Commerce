@@ -7,16 +7,19 @@ submitBtn.addEventListener("click",(e)=>{
  let errMessage = document.querySelector(".errMessageContainer")
  
  formInput.forEach(input => {
- 
   let inputValue = input.value.replace(/ /g,'')
-
+  const validationRegex = RegExp(/[1-9]+/, "g");
+  const phone = document.querySelector("input[name='phone']")
   if(inputValue.length > 0) input.style.borderColor = "#21273099"
-  else if(inputValue == "" || inputValue== " ") {
+  else if((inputValue == "" || inputValue== " ") && input.name != "phone") {
    input.style.borderColor = "red"
    showError(errMessage)
    e.preventDefault()
-  }
-
+  } else if( !phone.value.match(validationRegex) || phone.value == ""){
+   input.style.borderColor = "red"
+   showError(errMessage, "phone")
+   e.preventDefault()
+  } 
  });
 })
 

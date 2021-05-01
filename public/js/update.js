@@ -138,7 +138,7 @@ dltImg.forEach(btn => {
 });
 
 const uploadImg = document.querySelector(".custom-file-input")
-uploadImg.addEventListener("change", ()=>{
+uploadImg?.addEventListener("change", ()=>{
  const parentElement = uploadImg.parentElement.id.split("-")[1]
  const parentId = document.getElementById(parentElement)
  const parentNode = parentId.querySelector(".catalogImgContainer")

@@ -70,3 +70,42 @@ a:hover {
 .changePass {
  margin-left: 10px;
 }
+.cancelBtn {
+ margin-left: 10px;
+}
+.showPassParent {
+ margin-top: -10px;
+}
+.showPassParent input {
+ margin-right: 10px;
+}
+.showPassParent > input:checked {
+ border: 1px solid var(--primary-color) !important;
+ background-color: var(--accent-color) !important;
+}
+.showPassParent > label {
+ cursor: pointer;
+ opacity: 0.7;
+ user-select: none;
+}
+.showPassParent > label:hover {
+ cursor: pointer;
+ opacity: 1;
+ transition: all 0.3 ease;
+}
+.showPassParent input[type=checkbox] {
+ background-color: orange;
+ color: red;
+ background: purple;
+ border: pink;
+}
+.inputPassContainer{
+ position: relative;
+}
+.togglePassBtn {
+ position: absolute;
+ height: 15px;
+ right: 10px;
+ top: 8px;
+ cursor: pointer;
+}
