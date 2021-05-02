@@ -5,9 +5,9 @@
   </head>
  <body>
  <body>
-   
+  <% let errMessage %> 
   <% if (locals.message) { %>
-    <h5> <%= message %>  </h5>
+    <% errMessage = message %>
    <% } %>
  
    <% let userInfo = undefined %> 
@@ -33,6 +33,7 @@
     <%-  include("./partials/navOptions") %>
 
     <div class="mainContainer">
+      <h5>errMessage</h5><br>
       <form action="/upload/hero" enctype="multipart/form-data" method="POST">
       
         <label for="itemId">Item ID: </label><br>

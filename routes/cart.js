@@ -14,11 +14,12 @@ router.use(express.urlencoded({ extended: true }));
 router.use(cookieParser());
 
 router.get("/", [authToken], async (req, res) => { 
-
+  console.log("in cart")
  let user = await User.findById(req.userId).select("-password");
  if(user == undefined) user = undefined
  // if user is logged in then add items to user's cart
  if(user){
+  console.log("User is logged in", user)
   let readCookie = req.cookies.cart?.split(',')
   let userItemArr = [], userItemSizeArr = []
   // if cookie has a cart with items

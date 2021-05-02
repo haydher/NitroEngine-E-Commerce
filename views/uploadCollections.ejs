@@ -15,16 +15,17 @@
    <% fieldValues = data %> 
   <% } %>
 
+  <% let errMessage %> 
   <% if (locals.message) { %>
-   <h5> <%= message %>  </h5>
+    <% errMessage = message %>
   <% } %>
-
+  
   <% let cartCount = userInfo?.userCart[0]?.itemId.length %> 
   <%-  include("./partials/navbar", {userInfo, cartCount}) %> 
   <section class="mainContainerSection catalog">
     <%-  include("./partials/navOptions") %>
     <div class="mainContainer">
-
+    <h5><%=  errMessage %></h5><br>
     <form action="/upload/collection" enctype="multipart/form-data" method="POST">
     
     <label for="title">Collection Title: </label><br>
